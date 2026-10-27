@@ -31,9 +31,9 @@ The files abstract.tex, keywords.tex and disclosure.tex contain the remaining
 front matter and disclosure. The generated table fragments are frozen in
 tables, and figures contains only the four assets used by the paper.
 
-The author field was empty in the source manuscript. Add the final author
-names and affiliations in metadata.tex before public submission. PaperDate is
-empty so the PDF has no changing compilation date.
+The author names, affiliations and order are set in metadata.tex. PaperAuthors
+controls the visible title block, and PaperAuthorNames supplies the plain text
+PDF metadata. PaperDate is empty so the PDF has no changing compilation date.
 
 ## Use a journal template
 
