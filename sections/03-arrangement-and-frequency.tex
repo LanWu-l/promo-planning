@@ -1,0 +1,336 @@
+\section{Optimal Promotion Arrangement and Frequency}
+\label{sec:general-decomposition}
+
+This section derives sufficient conditions for globally optimal promotion arrangements and frequencies. We first decompose market share function with marginal effects of remembered promotions. These effects determine the revenue contribution \(F_b\) of the number of promotions in a window of length \(b+1\). Concavity or convexity of these contributions determines optimal arrangements at fixed cycle length and number of promotions. In the concave case, the optimal promotion frequency can then be found by a finite search over a concave, piecewise linear function. In the convex case, we show that a constant price policy is optimal.
+
+\subsection{Representing market share functions}
+\label{sec:newton-representation}
+
+For a cohort of age \(a\), write \(M_a^j(y)=M_a(p^j,y)\), where \(j\in\{H,L\}\) and \(y=0,\ldots,a\). Define the baseline and marginal promotion effects by
+\[
+ \alpha_a^j=M_a^j(0),\qquad
+ \Delta_{a,k}^j=M_a^j(k)-M_a^j(k-1),\qquad k=1,\ldots,a.
+\]
+Here, \(\alpha_a^j\) denotes the baseline market share, and \(\Delta_{a,k}^j\) is the change in purchase probability when remembered promotions increase from \(k-1\) to \(k\), holding customer age and the current price fixed.
+
+The following simple lemma will be useful for the revenue decomposition in the next section. It shows that each market share function can be represented as a finite telescoping sum of marginal effects. The proof is immediate from the definition of \(\alpha_a^j\) and \(\Delta_{a,k}^j\), which can be found in the supplementary appendix, Section~\ref{app:general-proofs}.
+
+\begin{lemma}[Finite telescoping representation of market share]
+    \label{lem:weighted-tail-sum}
+For each age \(a\) and current price \(j\in\{H,L\}\), every conditional market share function \(M_a^j:\{0,\ldots,a\}\to\R\) has the unique representation
+\[
+ M_a^j(y)=\alpha_a^j+\sum_{k=1}^{a}\Delta_{a,k}^j\mathbf1\{y\ge k\}
+         =\alpha_a^j+\sum_{k=1}^{y}\Delta_{a,k}^j,
+ \qquad y=0,\ldots,a,
+\]
+with \(\alpha_a^j=M_a^j(0)\) and \(\Delta_{a,k}^j=M_a^j(k)-M_a^j(k-1)\).
+\end{lemma}
+
+Positive marginal effects \(\Delta_{a,k}^j > 0\) indicate an engagement effect. Decreasing positive effects describe diminishing engagement, while increasing positive effects describe reinforcement. Negative marginal effects, on the other hand, describe a negative historical response, as in a reference-price channel. Marginal effects are defined separately at the two current prices, allowing historical exposure to influence regular-price and promotional-price demand differently.
+
+\subsection{Number of promotions and revenue decomposition}
+\label{sec:exposure-decomposition}
+
+Starting from cycle revenue and applying Lemma~\ref{lem:weighted-tail-sum} gives
+\[
+\begin{aligned}
+ R(C)=\sum_{a=0}^{\mathcal A}\sum_{t=1}^{\mathcal T}
+ \bigg[p^H\alpha_a^H+D_a(0)d_t
+       +p^H\sum_{k=1}^{a}\Delta_{a,k}^H\mathbf1\{y_{a,t}\ge k\}
+       -d_t\sum_{k=1}^{a}r_{a,k}\mathbf1\{y_{a,t}\ge k\}\bigg],
+\end{aligned}
+\]
+where \(D_a(0)=p^L\alpha_a^L-p^H\alpha_a^H\) and
+\[
+ r_{a,k}=p^H\Delta_{a,k}^H-p^L\Delta_{a,k}^L.
+\]
+The quantity \(r_{a,k}\) compares the revenue effects of an additional remembered promotion at the regular and promotional prices.
+
+Define the number of promotions in the window containing period \(t\) and the preceding \(b\) periods by
+\[
+ N_{b,t}(C)=\sum_{i=0}^{b}d_{t-i}(C),\qquad b=0,\ldots,\mathcal A.
+\]
+For the derivation, write \(x_+=\max\{x,0\}\) and
+\[
+ V_{b,k}(C)=\sum_{t=1}^{\mathcal T}\bigl(N_{b,t}(C)-k\bigr)_+.
+\]
+The quantity \(V_{b,k}\) sums the excess of the number of promotions in each window above a threshold \(k\). Set \(N_{-1,t}=0\) and \(V_{-1,k}=0\).
+
+The promotion combination counts used below are
+\[
+    Q_{b,r}(C)=\sum_{t=1}^{\mathcal T}\binom{N_{b,t}(C)}r,
+    \qquad b=0,\ldots,\mathcal A,\quad r=0,\ldots,b+1.
+\]
+We set \(Q_{b,r}=0\) when \(b<0\), \(r<0\), or \(r>b+1\).
+
+Recall that \(y_{a,t}=\sum_{j=1}^{a}d_{t-j}\) counts the past promotions remembered by customers of age \(a\), \(y_{a,t}=N_{a-1,t-1}\), cyclic summation gives
+\[
+ \sum_t y_{a,t}=am,\qquad
+ \sum_t(y_{a,t}-k)_+=V_{a-1,k}.
+\]
+Here \(m=\sum_{t=1}^{\mathcal T}d_t\) is the number of promotional periods in one price cycle, where \(d_t=1\) when the promotional price is charged and \(0\) otherwise. The corresponding promotion frequency is \(\rho=m/\mathcal T\).
+
+For binary \(d_t\),
+\[
+ d_t\mathbf1\{y_{a,t}\ge k\}
+ =(y_{a,t}+d_t-k)_+-(y_{a,t}-k)_+.
+\]
+Since \(y_{a,t}+d_t=N_{a,t}\), summing over the cycle yields
+\[
+ \sum_t d_t\mathbf1\{y_{a,t}\ge k\}
+ =V_{a,k}-V_{a-1,k}.
+\]
+These identities account for both the promotion history and the price at which its demand effect is monetized.
+
+The regular-price historical response can also be written as
+\[
+ \sum_{k=1}^{a}\Delta_{a,k}^H\mathbf1\{y\ge k\}
+ =\Delta_{a,1}^H y
+  +\sum_{k=1}^{a-1}(\Delta_{a,k+1}^H-\Delta_{a,k}^H)(y-k)_+,
+ \qquad a\ge1.
+\]
+Substituting this expression and the cycle identities above, then collecting terms with the same \(V_{b,k}\), gives the following decomposition. The marginal effects \(\Delta_{a,k}^j\) describe demand, while the coefficients \(\psi\) below describe changes in the marginal revenue contribution of promotions within a window.
+
+\begin{proposition}[Revenue decomposition by window contributions]
+\label{thm:exposure-decomposition}
+Under Assumption~\ref{ass:count-based}, every cycle \(C\) with \(\mathcal T\) periods and \(m\) promotions has revenue
+\[
+ R(C)=\underbrace{\mathcal T g_0+mg_1}_{K_{\mathcal T,m}}
+       +\sum_{b=1}^{\mathcal A}\sum_{t=1}^{\mathcal T}
+          F_b\bigl(N_{b,t}(C)\bigr),
+\]
+where
+\[
+ F_b(n)=\sum_{k=1}^{b}(n-k)_+\psi_{b,k},
+ \qquad n=0,\ldots,b+1,
+\]
+\[
+ \psi_{b,k}=
+ \begin{cases}
+ p^H(\Delta_{b+1,k+1}^H-\Delta_{b+1,k}^H)+r_{b+1,k}-r_{b,k},
+       &1\le k\le b<\mathcal A,\\
+ -r_{\mathcal A,k},&1\le k\le b=\mathcal A,
+ \end{cases}
+\]
+and
+\[
+\begin{aligned}
+ g_0&=p^H\sum_{a=0}^{\mathcal A}\alpha_a^H,\\
+ g_1&=\sum_{a=0}^{\mathcal A}
+       \bigl(p^Ha \Delta_{a,1}^H+p^L\alpha_a^L-p^H\alpha_a^H\bigr).
+\end{aligned}
+\]
+The term \(a\Delta_{a,1}^H\) is interpreted as zero at age zero. In particular,
+\[
+ F_b(0)=F_b(1)=0,\qquad
+ F_b(k+1)-2F_b(k)+F_b(k-1)=\psi_{b,k}.
+\]
+\end{proposition}
+
+The function \(F_b\) is the promotion interaction contribution of a window of length \(b+1\), after the baseline terms related to \(g_0, g_1\) have been collected in the \(K_{\mathcal T,m}\).
+Concavity of the function \(F_b\) means that adding another promotion contributes less to this term when the number of promotions in the window increases. The coefficient \(\psi_{b,k}\) measures the change in that additional contribution, and the concavity of \(F_b\) is equivalent to \(\psi_{b,k}\le0\) for every \(k\).
+
+\subsection{Optimal arrangement structure}
+\label{sec:sign-arrangement}
+\label{sec:cycle-arrangements}
+
+With the revenue decomposition in Proposition~\ref{thm:exposure-decomposition}, we can now analyze the optimal arrangement of promotions for a given cycle length and number of promotions. The following definitions introduce two benchmark arrangements that have nice properties in terms of \(N_{b,t}\) they induce and will be used throughout the paper.
+
+\begin{definition}[Balanced cycle]
+    \label{def:balanced-cycle}
+    Let \(C\) be a cycle of \(\mathcal T\) periods with promotion indicators \((d_t)\) and \(m=\sum_{t=1}^{\mathcal T}d_t\) promotions. The cycle is \emph{balanced} if, for every window length \(k=1,\ldots,\mathcal A+1\) and every starting index \(u\in\mathbb Z\),
+    \[
+        \sum_{t=u+1}^{u+k}d_t
+        \in
+        \left\{
+            \left\lfloor\frac{km}{\mathcal T}\right\rfloor,
+            \left\lceil\frac{km}{\mathcal T}\right\rceil
+        \right\},
+    \]
+    where \(\lfloor \cdot \rfloor\) and \(\lceil \cdot \rceil\) denote the floor and ceiling functions, respectively.
+\end{definition}
+
+\begin{definition}[Single block cycle]
+    \label{def:single-transition-cycle}
+    Let \(C\) be a cycle of \(\mathcal T\) periods with \(m\) promotions. For \(1\le m\le \mathcal T-1\), the cycle is a \emph{single block cycle} if, up to cyclic rotation, \(d_1=\cdots=d_m=1\) and \(d_{m+1}=\cdots=d_{\mathcal T}=0\). Thus, the promotional periods form a single promotion block and the regular price periods form a single block. The constant cycles with \(m=0\) or \(m=\mathcal T\) are included as boundary cases.
+\end{definition}
+
+Balance requires each window count to equal either the floor or the ceiling of its mean \(km/\mathcal T\). Since for any window of length \(k\), the number of promotions in that window differs by at most one as we move the window along the cycle, the balanced cycle spreads promotions as evenly as possible across the cycle relevant to customer memory.
+On the other hand, a single block cycle places all promotions in a single block for a fixed cycle length and number of promotions.
+
+\begin{example}[Balanced and single block cycles]
+    \label{ex:balanced-cycle}
+    Let \(\mathcal T=5\), \(m=2\), and \(\mathcal A=3\). The following cycles have the same promotion frequency \(2/5\).
+    \medskip
+    \begin{center}
+    \begin{tabular}{lccccc}
+        \toprule
+        Arrangement & Period 1 & Period 2 & Period 3 & Period 4 & Period 5 \\
+        \midrule
+        Balanced & \(p^H\) & \(p^H\) & \(p^L\) & \(p^H\) & \(p^L\) \\
+        Single block & \(p^L\) & \(p^L\) & \(p^H\) & \(p^H\) & \(p^H\) \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+    \medskip
+    In the balanced cycle, windows of length one or two contain either zero or one promotion, while windows of length three or four contain either one or two promotions. Thus, for each length up to \(\mathcal A+1=4\), the number of promotions differs across windows by at most one. In the single block cycle, windows of length two can contain zero, one, or two promotions, reflecting the concentration of exposure within the campaign.
+\end{example}
+
+It is clear that a single block cycle always exists. Next we show by construction that a balanced cycle also exists for every feasible cycle length and number of promotions.
+
+\begin{lemma}[Existence of balanced cycles]
+    \label{lem:balanced-exists}
+    For every integer \(\mathcal T\ge1\) and \(m\in\{0,\ldots,\mathcal T\}\), the binary sequence
+    \[
+        d_t=\left\lfloor\frac{tm}{\mathcal T}\right\rfloor
+            -\left\lfloor\frac{(t-1)m}{\mathcal T}\right\rfloor,
+        \qquad t\in\mathbb Z,
+    \]
+    is periodic with period \(\mathcal T\), is balanced, and contains exactly \(m\) promotions per cycle.
+\end{lemma}
+
+For each \((\mathcal T,m)\), the single block arrangement is unique up to rotation. The balanced arrangement is also unique up to rotation when \(\mathcal T\le\mathcal A+1\). For longer cycles, distinct arrangements can satisfy the same balance requirements over the relevant windows. Proofs of the existence and uniqueness results appear in Section~\ref{app:general-proofs} of the supplementary appendix.
+
+The following lemma compares sums of convex or concave functions of the numbers of promotions in moving windows under these two arrangements.
+
+\begin{lemma}
+\label{lem:overlap-extrema}
+Fix \((\mathcal T,m)\). For every depth \(b=0,\ldots,\mathcal A\) and every discretely convex function \(\phi\) on \(\{0,\ldots,b+1\}\), every balanced cycle minimizes
+\[
+ \sum_{t=1}^{\mathcal T}\phi\bigl(N_{b,t}(C)\bigr),
+\]
+and a single block cycle maximizes it. For a discretely concave function the comparisons are reversed. In particular, these comparisons apply to the window revenue contribution functions \(F_b\).
+\end{lemma}
+
+The proof appears in the supplementary appendix, Section~\ref{app:general-proofs}.
+
+Substituting these simultaneous extrema into the revenue decomposition gives sufficient conditions for optimal arrangements.
+
+\begin{theorem}[Optimal arrangement from window contributions]
+\label{thm:general-sign-arrangement}
+Fix \((\mathcal T,m)\) and compare cycles with \(\mathcal T\) periods and \(m\) promotions.
+\begin{enumerate}[label=(\roman*)]
+ \item If every \(F_b\) is discretely concave, equivalently \(\psi_{b,k}\le0\) for \(1\le k\le b\le\mathcal A\), then every balanced cycle is optimal. If additionally \(\mathcal T\le\mathcal A+1\) and \(\psi_{b,k}<0\) for \(1\le k\le b,\quad b=1,\ldots,\mathcal T-2\), the balanced arrangement is uniquely optimal up to cyclic rotation.
+ \item If every \(F_b\) is discretely convex, equivalently \(\psi_{b,k}\ge0\) for every such depth and exposure index, then a single block cycle is optimal.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+At fixed \((\mathcal T,m)\), arrangement affects revenue only through \(\sum_{b,t}F_b(N_{b,t})\). A balanced cycle maximizes the sum for each concave \(F_b\), while a single block cycle maximizes it for each convex \(F_b\). Lemma~\ref{lem:overlap-extrema} therefore establishes parts (i) and (ii). For uniqueness under part (i), suppose \(\mathcal T\le\mathcal A+1\) and the stated strict inequalities hold. As shown in \hyperref[app:overlap-proof]{the proof of Lemma~\ref*{lem:overlap-extrema}} in Section~\ref{app:general-proofs} of the supplementary appendix, every nonbalanced cycle has two windows of some length \(b+1\), with \(1\le b\le\mathcal T-2\), whose numbers of promotions differ by at least two. Strict concavity of the corresponding \(F_b\) makes its total contribution strictly smaller than in a balanced cycle, while concavity gives weak comparisons at all other depths. Hence every nonbalanced cycle has strictly lower revenue. Uniqueness of balanced cycles up to rotation completes the argument.
+\end{proof}
+
+Table~\ref{tab:result-map} summarizes how the shape of \(F_b\) determines arrangement and frequency.
+\begin{table}[ht]
+\centering\small
+\caption{Structural implications of the window revenue contributions.}
+\label{tab:result-map}
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Window contributions & Arrangement at fixed \((\mathcal T,m)\) & Joint arrangement and frequency choice \\
+\midrule
+All concave & Balanced & Concave frequency objective with an optimal period of at most \(\mathcal A+1\) \\[3pt]
+All convex & A single promotion block & A constant price is optimal \\[3pt]
+Neither condition & Tradeoffs among window contributions & Balanced and single block policies have loss bounds, and memory truncation approximates the optimal policy \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+When the concavity or convexity conditions fail, several separated promotion blocks can be optimal. Set \(\mathcal T=12\), \(m=4\), \(\mathcal A=5\), \(p^L=1\), and \(p^H=1.8\), and consider the threshold market share function
+\[
+    M_a(p,y)=0.04+0.48(0.85)^a
+    \mathbf1\!\left\{y+\mathbf1\{p=p^L\}\ge2\right\}.
+\]
+Enumerating all 495 feasible cycles yields an optimal cycle
+\[
+    d=(0,0,0,0,1,1,0,0,0,0,1,1).
+\]
+Its promotions form two pairs separated by four regular price periods, and it earns more revenue than either benchmark arrangement. The complete comparison across five market share functions appears in Section~\ref{app:general-proofs} of the supplementary appendix.
+
+\subsection{Optimal frequency for balanced arrangements}
+\label{sec:general-frequency}
+
+Balanced cycles with the same promotion frequency generate the same average revenue. When every \(F_b\) is concave, this property reduces the seller's problem to maximizing a concave function of frequency over a finite candidate set.
+
+For \(\rho\in[0,1]\), define
+\[
+    n_b(\rho):=\lfloor(b+1)\rho\rfloor,\qquad
+    \xi_b(\rho):=(b+1)\rho-n_b(\rho).
+\]
+In a balanced cycle with rational frequency \(\rho=m/\mathcal T\), windows of length \(b+1\) contain either \(n_b(\rho)\) or \(n_b(\rho)+1\) promotions. Their average count is \((b+1)\rho\), so the proportion containing the larger count is \(\xi_b(\rho)\). For example, an average count of \(2.3\) means that \(70\%\) of the windows contain two promotions and \(30\%\) contain three.
+
+For each admissible depth \(b\) and order \(r\ge2\), define
+\[
+    q_{b,r}(\rho)
+    :=
+    \bigl(1-\xi_b(\rho)\bigr)\binom{n_b(\rho)}{r}
+    +
+    \xi_b(\rho)\binom{n_b(\rho)+1}{r}.
+\]
+At a rational frequency, this expression gives the average promotion combination count of any balanced cycle,
+\[
+    q_{b,r}(\rho)=\frac{Q_{b,r}(C^{\mathrm{bal}})}{\mathcal T}.
+\]
+The same formula defines a continuous interpolation over all \(\rho\in[0,1]\).
+
+\begin{proposition}[Frequency representation for balanced cycles]
+    \label{thm:ratio}
+For any balanced cycle \(C^{\mathrm{bal}}\) with \(\mathcal T\) periods and \(m\) promotions, average revenue depends on \((\mathcal T,m)\) only through \(\rho=m/\mathcal T\). Specifically,
+\begin{equation}\label{eq:general-g-rho}
+ \bar R(C^{\mathrm{bal}})=g(\rho),\qquad
+ g(\rho)=g_0+g_1\rho+
+          \sum_{b=1}^{\mathcal A}\widetilde F_b\bigl((b+1)\rho\bigr),
+\end{equation}
+where \(\widetilde F_b\) is the linear interpolation of \(F_b\) between consecutive integers, and \(g_0,g_1\) are defined in Proposition~\ref{thm:exposure-decomposition}.
+\end{proposition}
+
+The constant term \(g_0\) is average revenue under the regular price. The term \(g_1\rho\) collects the contributions linear in promotion frequency, while the remaining terms capture the window revenue contributions. When all \(F_b\)'s are concave, Theorem~\ref{thm:general-sign-arrangement} makes a balanced cycle optimal at every fixed \((\mathcal T,m)\). Maximizing \(g\) therefore determines both an optimal frequency and an optimal arrangement.
+
+\begin{proposition}[Concavity and short cycles]
+    \label{thm:pwl}
+Suppose \(F_b\) is discretely concave on \(\{0,\ldots,b+1\}\) for every \(b=1,\ldots,\mathcal A\). Then \(g\) is continuous, piecewise linear, and concave on \([0,1]\). A maximizer of \(g\) can be chosen from
+\[
+ \mathcal B=\{0,1\}\cup
+ \left\{\frac{j}{b+1}:b=1,\ldots,\mathcal A,\ j=1,\ldots,b\right\}.
+\]
+Consequently, there exists a balanced cycle with period at most \(\mathcal A+1\) that is optimal over all feasible infinite price paths.
+\end{proposition}
+
+The result gives a procedure for selecting the cycle. Evaluate \(g\) at every frequency in \(\mathcal B\), find a maximizer \(\rho^\star=m^\star/\mathcal T^\star\) and construct the corresponding balanced cycle using Lemma~\ref{lem:balanced-exists}. Given the window contribution tables, the direct search takes \(O(\mathcal A^3)\) arithmetic operations and \(O(\mathcal A^2)\) space for \(\mathcal A\ge1\). These are unit cost arithmetic bounds. Algorithm~\ref{alg:general-balanced-frequency} in the supplementary appendix gives the procedure.
+
+\subsection{Constant price optimality under convex window contributions}
+\label{sec:general-single-transition-frequency}
+
+When every \(F_b\) is convex, Theorem~\ref{thm:general-sign-arrangement} makes a single promotion block optimal at prescribed cycle length and number of promotions. Allowing the number of promotions to vary gives the following constant-price result.
+
+Under the constant regular price, every cohort remembers zero promotions. Under the constant promotional price, an age \(a\) cohort remembers \(a\) promotions. Let \(D\) denote the average revenue under the constant promotional price minus that under the constant regular price,
+\[
+    D
+    :=
+    p^{L}\sum_{a=0}^{\mathcal A}M_a^L(a)
+    -
+    p^{H}\sum_{a=0}^{\mathcal A}M_a^H(0).
+\]
+
+\begin{proposition}[Constant price optimality]
+    \label{prop:general-cluster-frequency}
+Suppose every \(F_b\) is discretely convex, equivalently \(\psi_{b,k}\ge0\) for \(1\le k\le b\le\mathcal A\). If \(D\le0\), the constant regular price is optimal over all feasible infinite price paths. If \(D\ge0\), the constant promotional price is optimal over all feasible infinite price paths. Both constant prices are optimal when \(D=0\).
+\end{proposition}
+
+The result follows from an upper bound on the revenue of every cycle. Discrete convexity bounds each window contribution by the chord joining its endpoint values,
+\[
+ F_b(n)\le\left(1-\frac{n}{b+1}\right)F_b(0)
+               +\frac{n}{b+1}F_b(b+1).
+\]
+Averaging and using \(\sum_tN_{b,t}=(b+1)m\) gives
+\[
+ \bar R(C)\le(1-\rho)p^H\sum_{a=0}^{\mathcal A}M_a^H(0)
+              +\rho p^L\sum_{a=0}^{\mathcal A}M_a^L(a).
+\]
+The right side is a weighted average of the revenues under the two constant prices. It is therefore bounded above by the revenue of the better constant price. Proposition~\ref{thm:cycle} extends this comparison to all feasible infinite price paths. The full proof appears in Section~\ref{app:general-proofs}.
+
+When \(D\ne0\), every cycle with \(0<\rho<1\) earns strictly less than the better constant price. When \(D=0\), both constant prices are optimal and a nonconstant cycle cannot exceed the constant price revenue.
+
+\subsection{Heterogeneous active lifetimes}
+\label{sec:heterogeneous-horizons}
+
+The revenue decomposition and optimality conditions can be extended to the case of customer heterogeneity through population weighted coefficients. Suppose each arriving cohort contains fixed proportions of finitely many customer types with different active lifetimes and market share functions, with full-history memory for every type satisfying Assumption~\ref{ass:count-based}. All types face the same price path. Aggregate revenue retains the decomposition in Proposition~\ref{thm:exposure-decomposition}, with each coefficient averaged across types using their cohort proportions. The arrangement and frequency results therefore apply whenever the corresponding concavity or convexity conditions hold for the population weighted window contributions, even when those conditions fail for some individual types. Under concave aggregate window contributions, an optimal balanced cycle has period at most one plus the largest maximum active age across types. The formal statement and proof appear in Section~\ref{app:general-proofs} of the supplementary appendix.

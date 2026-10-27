@@ -1,0 +1,77 @@
+\section{Proofs and supplementary results for Section~\ref{sec:beyond-linear}}
+\label{app:mult-proofs}
+\subsection{Multiplicative window contributions and arrangement regimes}
+\label{app:mult-regimes}
+\hypertarget{proof-multiplicative-windows}{}
+
+\begin{proof}[\normalfont\bfseries Proof of Corollary~\ref{prop:mult-gamma}]
+Since \(M_a^H(y)=s_2^{a+1}\theta^y\) and \(M_a^L(y)=\theta M_a^H(y)\), their successive differences are
+\[
+ \Delta_{a,k}^H=s_2^{a+1}(\theta-1)\theta^{k-1},\qquad
+ \Delta_{a,k}^L=\theta\Delta_{a,k}^H.
+\]
+The revenue comparison of marginal effects in Section~\ref{sec:exposure-decomposition} is therefore
+\[
+ r_{a,k}=p^H\Delta_{a,k}^H-p^L\Delta_{a,k}^L
+        =p^L(\kappa-\theta)\Delta_{a,k}^H.
+\]
+For \(1\le k\le b<\mathcal A\), Proposition~\ref{thm:exposure-decomposition} gives
+\[
+\begin{aligned}
+ \psi_{b,k}
+ &=p^H(\Delta_{b+1,k+1}^H-\Delta_{b+1,k}^H)+r_{b+1,k}-r_{b,k}\\
+ &=p^Ls_2^{b+1}(\theta-1)\theta^{k-1}
+       [\theta(1-s_2)-\kappa(1-s_1)]\\
+ &=p^Ls_2^b(\theta-1)\theta^{k-1}S_b^{\mathrm{mul}}(\kappa).
+\end{aligned}
+\]
+At the terminal depth, the same proposition yields
+\[
+ \psi_{\mathcal A,k}=-r_{\mathcal A,k}
+ =p^Ls_2^{\mathcal A+1}(\theta-1)\theta^{k-1}(\theta-\kappa)
+ =p^Ls_2^{\mathcal A}(\theta-1)\theta^{k-1}S_{\mathcal A}^{\mathrm{mul}}(\kappa).
+\]
+Finally, use \(F_b(n)=\sum_{k=1}^{b}(n-k)_+\psi_{b,k}\) and the finite geometric identity
+\[
+ \sum_{k=1}^{b}(n-k)_+\theta^{k-1}
+ =\frac{\theta^n-1-n(\theta-1)}{(\theta-1)^2},
+ \qquad n=0,\ldots,b+1.
+\]
+Substitution gives the stated formula for \(F_b\), including \(F_b(0)=F_b(1)=0\).
+\end{proof}
+
+\begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{thm:mult-regimes}]
+By Corollary~\ref{prop:mult-gamma}, the sign of every \(\psi_{b,k}\) at depth \(b\) equals the sign of \(S_b^{\mathrm{mul}}(\kappa)\). At the terminal depth,
+\[
+ S_{\mathcal A}^{\mathrm{mul}}(\kappa)=s_2(\theta-\kappa).
+\]
+For every interior depth,
+\[
+ S_b^{\mathrm{mul}}(\kappa)
+ =s_2[\theta(1-s_2)-\kappa(1-s_1)],
+ \qquad b<\mathcal A.
+\]
+If \(\kappa\le\theta\), the terminal factor is nonnegative, and each interior factor is positive because
+\[
+ \theta(1-s_2)-\kappa(1-s_1)
+ \ge\theta(s_1-s_2)>0.
+\]
+Thus every \(F_b\) is convex, and Theorem~\ref{thm:general-sign-arrangement}(ii) proves part (i).
+
+When \(\mathcal A\ge2\), interior factors are nonpositive if and only if \(\kappa\ge\tau^{\mathrm{mul}}\). Since \(\tau^{\mathrm{mul}}>\theta\), the terminal factor is then negative as well. When \(\mathcal A=1\), only the terminal factor remains, and it is nonpositive if and only if \(\kappa\ge\theta\). These are precisely the conditions for every \(F_b\) to be concave, so Theorem~\ref{thm:general-sign-arrangement}(i) proves part (ii).
+
+The remaining region has \(\mathcal A\ge2\) and \(\theta<\kappa<\tau^{\mathrm{mul}}\). All interior second differences are positive and all terminal second differences are negative, establishing part (iii). In the convex regime, Proposition~\ref{prop:general-cluster-frequency} gives a constant price optimum. Moreover, \(p^Ls_1^{a+1}\ge p^Hs_2^{a+1}\) at every age, so constant promotion is globally optimal. In the concave regime, Proposition~\ref{thm:pwl} gives an optimal balanced cycle with period at most \(\mathcal A+1\).
+\end{proof}
+
+\paragraph{Scope of the structural conditions.}
+The short-period conclusion requires concave window contributions. For the multiplicative model, let \(\mathcal A=2\), \(p^L=1\), \(p^H=5\), \(s_1=3/5\), and \(s_2=1/5\). Direct enumeration of all cycles of period at most three gives maximum revenue \(473/375\), whereas
+\[
+ \bar R(LLHH)=\frac{158}{125}>\frac{473}{375}.
+\]
+Thus an optimal period need not be at most \(\mathcal A+1\) outside the concave regime. This example also rules out domination by mixtures of shorter cycle revenues.
+
+Single block optimality at fixed frequency likewise needs a shape condition. With \(\mathcal A=1\), \(p^L=1\), \(p^H=2\), \(s_1=3/10\), and \(s_2=1/5\),
+\[
+ \bar R(LHLH)=\frac{11}{25}>\frac7{16}=\bar R(LLHH).
+\]
+These parameters give a concave window contribution, so the comparison agrees with balanced optimality.

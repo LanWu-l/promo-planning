@@ -1,0 +1,144 @@
+\section{Approximation under Mixed Curvature}
+\label{sec:approximation}
+\label{sec:mixed-curvature}
+
+When the window contributions have mixed curvature, the structural results in Section~\ref{sec:general-decomposition} cannot identify an optimal policy from their curvature conditions. Exact optimization remains possible on the finite state graph, but its size grows exponentially with memory. This motivates two computational approximations. The first builds on the preceding structural analysis.
+Balanced and single block policies can be optimized over finite candidate sets, and we bound their losses when the corresponding curvature conditions fail. The second truncates memory to reduce the state space, with a controlled revenue loss when distant prices have little effect on demand.
+
+
+
+\subsection{Balanced and single block policies}
+\label{sec:simple-policy-guarantees}
+
+Recall the candidate frequency set from Proposition~\ref{thm:pwl},
+\[
+ \mathcal B=\{0,1\}\cup
+ \left\{\frac{j}{b+1}:b=1,\ldots,\mathcal A,\ j=1,\ldots,b\right\}.
+\]
+Let \(C_B\) be a balanced cycle at a frequency maximizing \(g\) over \(\mathcal B\). Even without concavity, \(g\) is affine between consecutive points of \(\mathcal B\), so \(C_B\) is optimal among balanced cycles. For the single block comparison, let \(H,L\) denote the regular and promotional prices, and let \(C_S\) maximize revenue over
+\[
+ \mathcal S=\{H,L\}\cup
+       \{H^hL^m:1\le h,m\le\mathcal A\}.
+\]
+Here \(H^hL^m\) consists of \(h\) regular price periods followed by \(m\) promotional periods. Constant prices are included as boundary cases. The proposition shows that this finite search finds the best single block policy over all block lengths.
+
+Recall that \(C_B\) is globally optimal when every \(\psi_{b,k}\le0\), while a constant price, and hence \(C_S\), is globally optimal when every \(\psi_{b,k}\ge0\). These conclusions follow from Propositions~\ref{thm:pwl} and~\ref{prop:general-cluster-frequency}. The following bounds measure the loss from violations of the respective sign conditions.
+
+\begin{proposition}[Revenue guarantees for simple policies]
+\label{prop:mixed-curvature-guarantee}
+Under Assumption~\ref{ass:count-based}, the following guarantees hold.\nopagebreak[4]
+
+\textup{(i)} The best balanced policy \(C_B\) can be chosen with period at most \(\mathcal A+1\), and
+\begin{equation}\label{eq:mixed-curvature-guarantee}
+ 0\le\bar R^*-\bar R(C_B)
+ \le\sum_{b=1}^{\mathcal A}\sum_{k=1}^{b}
+       \max\{\psi_{b,k},0\}\frac{k(b+1-k)}{b+1}
+ =:E_B.
+\end{equation}
+
+\textup{(ii)} The best single block policy \(C_S\) is found by evaluating at most \(\mathcal A^2+2\) cycles. For \(\mathcal A\ge1\), its period is at most \(2\mathcal A\), and
+\[
+ 0\le\bar R^*-\bar R(C_S)
+ \le\sum_{b=1}^{\mathcal A}\sum_{k=1}^{b}
+       \max\{-\psi_{b,k},0\}\frac{k(b+1-k)}{b+1}
+ =:E_S.
+\]
+For \(\mathcal A=0\), both candidates reduce to optimal constant prices. Choosing \(C_{\mathrm{app}}\) as the better of \(C_B\) and \(C_S\) gives
+\[
+ 0\le\bar R^*-\bar R(C_{\mathrm{app}})
+ \le\min\{E_B,E_S\}.
+\]
+\end{proposition}
+
+Only coefficients with the opposite sign to the corresponding optimality condition enter each bound. Positive second differences enter \(E_B\), while the magnitudes of negative second differences enter \(E_S\). Each bound vanishes when its sign condition holds. The balanced search takes \(O(\mathcal A^3)\) arithmetic operations. The additional single block search can improve the attained revenue, as the first example below illustrates. Both searches include constant prices. The proof appears in Section~\ref{app:simple-policy-guarantees} of the supplementary appendix.
+
+The following two examples illustrate how these approximations can provide small revenue loss guarantees despite mixed curvature.
+
+\paragraph{Weak reinforcement.}
+For \(\mathcal A=3\), \(p^L=1\), and \(p^H=2\), consider
+\[
+ M_a(p,y)=0.10+0.05\cdot\mathbf1\{p=p^L\}+0.04y
+                 +\epsilon\binom y2,
+ \qquad 0<\epsilon\le0.01.
+\]
+The quadratic term represents reinforcement among remembered promotions, and all market shares lie in \([0,1]\). Interior second differences equal \(2\epsilon>0\), while terminal ones are negative, so the concavity condition fails for every \(\epsilon>0\). Nevertheless, \(E_B=11\epsilon/3\) tends to zero with reinforcement strength. At \(\epsilon=0.001\), \(C_B=HL\) earns \(0.901\), while \(C_S=HHLL\) earns the unrestricted optimum \(0.9015\). The balanced policy loses \(0.0555\%\), with a guaranteed loss below \(0.407\%\). Evaluating both candidates recovers the optimum.
+
+\paragraph{Weak promotion fatigue.}
+For \(\mathcal A=2\) and the same prices, let
+\[
+ M_a(p,y)=0.20+(0.20+\epsilon/3)\mathbf1\{p=p^L\}
+                 -\epsilon\binom y2,
+ \qquad 0<\epsilon\le0.01.
+\]
+Here demand falls after repeated past promotions, and all shares remain in \([0,1]\). The window second differences are \(-2\epsilon\), \(0\), and \(\epsilon\), giving mixed curvature and \(E_S=\epsilon\). At \(\epsilon=0.001\), both constant prices earn \(1.2\), while \(C_B=C_S=HL\) earns the optimal revenue \(1.2005\). The single block guarantee bounds its loss below \(0.084\%\), while the actual loss is zero. Exact optimality certificates for both examples appear in Section~\ref{app:simple-policy-guarantees} of the supplementary appendix.
+
+\subsection{Memory truncation for general market share}
+\label{sec:general-truncation}
+
+Choose \(0\le J<\mathcal A\), retain the current price and the last \(\min\{a,J\}\) past prices at age \(a\), and replace demand by
+\[
+ M_{a,J}\!\left(p_t,\sum_{j=1}^{\min\{a,J\}}d_{t-j}\right),
+ \qquad M_{a,J}(p,y)\in[0,1].
+\]
+All age cohorts remain in the objective, and \(M_{a,J}=M_a\) for \(a\le J\). For each affected age, define the largest error over compatible omitted histories by
+\[
+ \Delta^{\mathrm{tr}}_{a,J}
+ :=\max_{\substack{p\in\{p^L,p^H\}\\
+        0\le y\le J,\ 0\le z\le a-J}}
+       |M_a(p,y+z)-M_{a,J}(p,y)|,
+ \qquad
+ \varepsilon_J^{\mathrm{agg}}
+ :=p^H\sum_{a=J+1}^{\mathcal A}\Delta^{\mathrm{tr}}_{a,J},
+\]
+where \(y,z\) are integers. Write \(\bar R_J\) for average revenue under the truncated model, let \(C_J^\star\) maximize it, and set \(\bar R_J^\star=\bar R_J(C_J^\star)\).
+
+\begin{proposition}[General memory truncation guarantee]
+\label{prop:general-truncation}
+For every cycle \(C\),
+\[
+ |\bar R(C)-\bar R_J(C)|\le\varepsilon_J^{\mathrm{agg}},
+ \qquad
+ \bar R(C_J^\star)\ge\bar R^*-2\varepsilon_J^{\mathrm{agg}}.
+\]
+If all market share errors have the same sign across ages, prices, and histories, the factor two in the policy bound can be replaced by one. These comparisons also hold over all feasible infinite price paths.
+\end{proposition}
+
+The truncated problem has only \(2^J\) past-price histories and can be optimized by the maximum mean cycle method. Its policy is then evaluated under the original demand model. A short memory is justified when the aggregate error above is small relative to policy revenue. Finite memory alone does not imply a small truncation error.
+
+One explicit choice is the midpoint of the smallest and largest values of \(M_a(p,y+z)\) over \(0\le z\le a-J\). It is a valid market share and minimizes the largest error for each \((a,p,y)\). Its error is half that range. Alternatively, the maximum gives an upper approximation and permits the one-sided bound. Both choices require no parametric demand form.
+
+For example, suppose \(M_a(p,y)=q^a m_a(p,y)\), where \(0<q<1\) and \(0\le m_a\le1\). Choosing \(M_{a,J}(p,y)=q^a m_a(p,y)\) on the retained domain gives \(\Delta^{\mathrm{tr}}_{a,J}\le q^a\), and hence
+\[
+ 2\varepsilon_J^{\mathrm{agg}}
+ \le\frac{2p^Hq^{J+1}}{1-q}.
+\]
+Thus fading activity with age can justify short memory even with nonlinear market share. Dividing revenues and bounds by \(\mathcal A+1\) gives the corresponding normalized guarantees. The proof and a posteriori policy certificates appear in Section~\ref{app:general-truncation} of the supplementary appendix.
+
+\paragraph{Multiplicative demand.}
+\label{sec:computation}
+For the multiplicative market share in Section~\ref{sec:beyond-linear}, truncation has a one-sided bound. For \(0\le J<\mathcal A\), retaining only the last \(\min\{a,J\}\) past prices gives
+\[
+ M_{a,J}^{\mathrm{mul}}(p,y)=s(p)s_1^ys_2^{\min\{a,J\}-y}.
+\]
+Omitting factors below one overstates survival, with age-specific error
+\(\Delta^{\mathrm{tr}}_{a,J}=s_1^{J+1}(1-s_2^{a-J})\) for \(a>J\).
+
+\begin{proposition}[Multiplicative memory truncation]
+\label{prop:truncation}
+Define \(\widehat R=\bar R/(\mathcal A+1)\) and \(\widehat R_J=\bar R_J/(\mathcal A+1)\). If \(C_J^\star\) optimizes the truncated model, then every cycle satisfies
+\[
+ 0\le\widehat R_J(C)-\widehat R(C)\le\widehat\varepsilon_J,
+ \qquad
+ \widehat R(C_J^\star)\ge\widehat R^\star-\widehat\varepsilon_J,
+\]
+where
+\[
+ \widehat\varepsilon_J
+ =\frac{p^Hs_1^{J+1}}{\mathcal A+1}
+       \sum_{a=J+1}^{\mathcal A}(1-s_2^{a-J})
+ \le p^Hs_1^{J+1}.
+\]
+\end{proposition}
+
+Thus \(J\) can be chosen to meet a revenue tolerance using the geometric bound. The factor one follows from Proposition~\ref{prop:general-truncation}. The age-specific error calculation is given in Section~\ref{app:mult-computation} of the supplementary appendix.
+\FloatBarrier

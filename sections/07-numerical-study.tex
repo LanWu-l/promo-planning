@@ -1,0 +1,116 @@
+\section{Numerical Study}
+\label{sec:usecase}
+
+We examine how to implement the promotion planning procedure, how discarding price order affects policy revenue, and how the two computational approximations perform relative to their revenue loss bounds. The experiments use specified demand functions rather than an empirical calibration.
+
+\subsection{From estimated demand to a pricing cycle}
+\label{sec:estimated-cycle}
+
+Consider a monthly access service with regular price \(p^H=9.99\), promotional price \(p^L=5.99\), and five active ages \(a=0,\ldots,4\). The baseline market share is
+\[
+ M_a(p_t,y_{a,t})=\alpha_a+\beta_a(d_t+y_{a,t}),
+ \qquad
+ \begin{aligned}
+ \alpha&=(0.08,0.15,0.20,0.23,0.25),\\
+ \beta&=(0,0.0675,0.054,0.042,0.030).
+ \end{aligned}
+\]
+We simulate 400 independent groups over 24 measured months, with 60 users at each active age per group and month. Each group has a promotion probability drawn uniformly from \([0.2,0.8]\). Prices are assigned independently across months conditional on that probability, with four initial prices supplying the first measured histories. Conditional purchases are binomial with 60 trials and the specified market share. Using 300 groups, we estimate the age-specific intercepts and slopes by weighted least squares on observed cohort purchase proportions, with weights equal to cohort size and full-history memory fixed at four.
+
+All estimated window contributions are concave. Theorem~\ref{thm:general-sign-arrangement} and Proposition~\ref{thm:pwl} therefore reduce optimization to balanced cycles at the candidate frequencies and select \(\rho=1/2\), implemented by \(HL\). Under the true model, this cycle earns monthly revenue \(9.6438\), compared with \(9.0909\) under constant regular pricing and \(9.1348\) under constant promotional pricing. These values use unit mass arrivals and aggregate demand across five active ages. The improvement over constant regular pricing is \(6.08\%\). Resampling the 300 estimation groups in 500 bootstrap replications selects \(HL\) in \(99.2\%\) of replications.
+
+Figure~\ref{fig:subscription-frontier} compares implementable price calendars and their revenue gains. Alternation and a single promotion block both use five promotions in ten periods, but alternation earns \(2.32\%\) more. The two constant price calendars show the revenue consequences of removing price variation altogether.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{subscription_usecase_frontier.pdf}
+\caption{Ten-month price calendars and revenue gains under the true baseline demand. \(H\) and \(L\) denote regular and promotional prices. The balanced and single block calendars have the same promotion frequency, isolating the value of arrangement. The other calendars use constant prices.}
+\label{fig:subscription-frontier}
+\end{figure}
+
+
+
+\input{tables/reference-values.tex}
+\subsection{Policy robustness under reference-price demand}
+\label{sec:reference-robustness}
+
+To test sensitivity to price order, retain the baseline prices, ages, and coefficients, and let \(e\in\{0,1\}\) indicate historical engagement. Define
+\[
+ q_{a,t}^{e}=\alpha_a+\beta_a(d_t+e y_{a,t}),\qquad
+ r_{a,t}(\lambda)=\frac{\sum_{j=1}^a\lambda^{j-1}p_{t-j}}{\sum_{j=1}^a\lambda^{j-1}},
+ \qquad z_{a,t}=\frac{r_{a,t}(\lambda)-p_t}{p^H-p^L}.
+\]
+Following the gain and loss mechanisms of \citet{kopalle1996reference} and \citet{popescu2007}, set
+\begin{equation}\label{eq:reference-robustness-dgp}
+ M^{\mathrm{true}}_{a,t}
+ =\sigma\!\left(\operatorname{logit}(q_{a,t}^{e})
+       +\gamma\{(z_{a,t})_+-\ell(-z_{a,t})_+\}\right),
+ \qquad \sigma(v)=\frac1{1+\exp(-v)},
+\end{equation}
+with no reference term at age zero. For each \(e\), use one \(\gamma=0\) control and all combinations of \(\lambda\in\{0.2,0.6,1\}\), \(\gamma\in\{0.5,1.5\}\), and \(\ell\in\{0.5,2\}\). These 26 cases comprise ten count-based controls and 16 order-dependent cases. Smaller \(\lambda\) gives greater weight to recent prices.
+
+The population count model averages true probabilities within each age, current-price, and past-count cell under the baseline randomized histories. For each case, we also generate 100 data sets using the baseline sampling design and estimate the 30 cells from 300 groups by \(\widehat M_a(p,y)=(Y_{a,p,y}+1/2)/(N_{a,p,y}+1)\), where \(Y\) and \(N\) are purchases and trials. No shape restriction is imposed. We optimize each count model and evaluate its policy under true demand, reporting
+\[
+ \operatorname{Regret}(\widehat C)
+ =100\frac{\bar R_{\mathrm{true}}^*-
+               \bar R_{\mathrm{true}}(\widehat C)}{\bar R_{\mathrm{true}}^*}.
+\]
+Independent calculations on the equivalent graph with 16 past-price states and edge revenues verify all optima within \(10^{-10}\) revenue units.
+
+Mean estimated-policy regret across the order-dependent cases is \(\RefMissMean\%\) (Table~\ref{tab:reference-robustness} in the supplementary appendix). The population count model selects a true optimum in 15 of 16 cases. The exception has \(e=0\), \(\lambda=0.2\), \(\gamma=1.5\), and \(\ell=0.5\). It selects \(HHL\) instead of \(HL\), losing \(\RefWorstPopulation\%\). With estimation, mean regret is \(\RefWorstMean\%\) (Monte Carlo standard error \(\RefWorstMCSE\) percentage points, P95 \(\RefWorstTail\%\)). Thus strong gain sensitivity and emphasis on the latest price can make order consequential, despite good performance in most tested cases.
+
+\subsection{Computational approximation guarantees}
+\label{sec:approximation-numerics}
+
+We test both approximations in Section~\ref{sec:approximation} on 1,296 specified demand functions, including 1,044 with mixed curvature, without estimation noise. Set \(\mathcal A\in\{4,6,8\}\) and scale revenues and bounds by \(1/(\mathcal A+1)\). Losses and bounds are percentages of the unrestricted full-model optimum, used only as a numerical benchmark. A loss of \(1\%\) is the reference tolerance.
+
+For general demand, take \(p^L=1\), \(p^H=2\), and
+\[
+ M_a^d(y)=q^a\{\alpha+\eta d+f_a^d(y)\},\qquad
+ \eta=\alpha-\frac{\sum_{a=0}^{\mathcal A}q^af_a^1(a)}
+                         {\sum_{a=0}^{\mathcal A}q^a}+u,
+ \qquad d\in\{0,1\}.
+\]
+The constant prices tie at \(u=0\). Cross \(q\in\{0.4,0.7,0.95,1\}\), controlling fading with age, and \(u\in\{-0.04,0,0.04\}\), changing constant-price profitability, with two response grids. The first uses \(\alpha=0.30\) and
+\[
+ f_a^0(y)=f_a^1(y)=\beta y+\epsilon\binom y2,\qquad
+ \beta=\frac{\pm0.08}{\mathcal A},\quad
+ \epsilon=\frac{\pm v}{\binom{\mathcal A}{2}},\quad
+ v\in\{0.002,0.02,0.10,0.18\},
+\]
+with independent signs, giving 576 cases with varying response and curvature. The second uses \(\alpha=0.25\), \(f_a^0=0\), and
+\[
+ f_a^1(y)=\frac{v}{\mathcal A}
+       \cos\!\left(\frac{2\pi(a+\phi)}{P}\right)y,
+ \qquad v\in\{0.04,0.12,0.30\},\quad
+ P\in\{2,3,4\},\quad \phi\in\{0,1\},
+\]
+giving 648 cases with effects changing sign across ages. Both general grids have shares in \([0,0.824]\). The remaining 72 cases use multiplicative demand with \(s_1\in\{0.4,0.7,0.9,0.98\}\), \(s_2/s_1\in\{0.5,0.8\}\), \(p^L=1\), and \(\kappa=\theta+t(\tau^{\mathrm{mul}}-\theta)\), \(t\in\{0.25,0.5,0.75\}\). These lie in the mixed regime, with price ratios from approximately \(1.292\) to \(38.75\), including stress cases with large price gaps.
+
+\paragraph{Balanced and single block policies.}
+Table~\ref{tab:simple-approximation-performance} compares the finite searches in Proposition~\ref{prop:mixed-curvature-guarantee}, grouping general cases by \(\omega=E_B/(E_B+E_S)\). The better policy loses at most \(0.124\%\), versus \(2.395\%\) for balanced policies alone. Its curvature bound is below \(1\%\) in \(47.0\%\) of cases, but reaches \(32.222\%\) when the two sign budgets are comparable. Thus a large bound can coexist with high policy revenue.
+
+\begin{table}[ht]
+
+\centering\small
+\caption{Maximum loss and curvature bound (\%). The first three rows partition the general cases. Better selects between balanced and single block policies. Bound is \(100\min\{E_B,E_S\}/\bar R^*\). Column maxima may occur in different cases.}
+\label{tab:simple-approximation-performance}
+\setlength{\tabcolsep}{5pt}
+\input{tables/simple-policy.tex}
+\end{table}
+
+\paragraph{Memory truncation.}
+We optimize every \(J=0,\ldots,\mathcal A-1\), giving 7,776 truncated problems, and evaluate each selected cycle under full demand. General demand uses the compatible-range midpoint and bound \(2\varepsilon_J^{\mathrm{agg}}\). Multiplicative demand omits survival factors and uses the one-sided bound in Proposition~\ref{prop:truncation}. All 9,072 full and truncated optima have cycle and potential certificates within \(10^{-9}\). Independent linear programs also verify the full-model values.
+
+At \(J=2\), four past-price states replace 16, 64, or 256. Table~\ref{tab:truncation-performance} in the supplementary appendix gives the detailed comparison. General-demand loss reaches only \(0.133\%\) at \(q=0.4\), but \(6.667\%\) at \(q\ge0.95\). At \(J=3\), the bound is below \(0.702\%\) in every \(q=0.4\) case. Persistent memory can require the full history to meet the \(1\%\) bound benchmark. Multiplicative truncation loses up to \(19.184\%\) at \(J=2\), and none of its bounds is below \(1\%\), even though all \(s_1=0.4\) cases have zero loss to numerical precision. Factor omission inflates older-cohort demand, making the uniform bound conservative.
+
+\begin{figure}[!htbp]
+
+\centering
+\includegraphics[width=0.96\textwidth]{approximation_bounds.pdf}
+\caption{Minimum retained memory at \(\mathcal A=8\) needed to keep loss or its bound at or below \(1\%\). Filled circles and open squares show the respective cutoffs, each computed using the maximum over the remaining parameters. Panel (a) pools the general response grids, and panel (b) uses multiplicative factor omission. Upper axes report the corresponding \(2^J\) past-price states. At \(J=8\), full memory gives zero loss and bound.}
+\label{fig:approximation-bounds}
+\end{figure}
+
+These grids support simple-policy searches even when their curvature certificate is loose. Figure~\ref{fig:approximation-bounds} shows that memory truncation benefits from fading exposure, while persistent memory requires larger cutoffs.
+\FloatBarrier

@@ -1,0 +1,31 @@
+
+
+\section{Supplementary numerical results for Section~\ref{sec:usecase}}
+\label{app:numerical-study}
+
+\subsection{Reference price robustness}
+\label{app:numerical-reference}
+Table~\ref{tab:reference-robustness} supplements Section~\ref{sec:reference-robustness}. Each positive-\(\gamma\) row pools three reference smoothing parameters and two loss-to-gain ratios, with 100 replications per case. Population and Constant average case-level regrets. The fitted-policy mean, P95, and maximum use the pooled replications. Population excludes estimation noise. The low average losses coexist with the failure case discussed in the main text, so this experiment does not establish robustness beyond the specified demand grid.
+
+\begin{table}[H]
+
+\centering\small
+\caption{True-demand regret (\%). Rows with \(\gamma>0\) pool six cases and 100 replications per case. Population excludes sampling noise. Mean, P95, and Max summarize fitted-policy regret. Constant uses the better true constant price.}
+\label{tab:reference-robustness}
+\setlength{\tabcolsep}{4pt}
+\input{tables/reference-robustness.tex}
+\end{table}
+
+\subsection{Memory truncation at a common cutoff}
+\label{app:numerical-truncation}
+Table~\ref{tab:truncation-performance} supplements Section~\ref{sec:approximation-numerics} and Figure~\ref{fig:approximation-bounds}. At \(J=2\), every approximation uses four past-price states. General rows pool the two general demand grids and maximum ages \(4,6,8\), while multiplicative rows pool the price and regular-retention settings at those ages. Loss and Bound are separate maxima relative to the full-model optimum and can come from different cases. The last column reports how often the relative bound is below \(1\%\). Bounds above \(100\%\) are retained to show their conservatism. They do not imply that actual loss exceeds \(100\%\).
+
+\begin{table}[H]
+
+\centering\small
+\caption{Truncation at \(J=2\). Loss and Bound are separate maxima (\%). The last column gives the percentage of cases with bound below \(1\%\). General rows pool both response grids. Bounds are uncapped.}
+\label{tab:truncation-performance}
+\setlength{\tabcolsep}{5pt}
+\input{tables/memory-truncation.tex}
+\end{table}
+\FloatBarrier

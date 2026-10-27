@@ -1,0 +1,121 @@
+
+
+\section{Proofs and supplementary results for Section~\ref{sec:approximation}}
+\label{app:approximation}
+
+\subsection{Balanced and single block guarantees}
+\label{app:simple-policy-guarantees}
+\hypertarget{proof-mixed-curvature}{}
+\begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{prop:mixed-curvature-guarantee}]
+Fix a cycle \(C\) with frequency \(\rho\). For \(l=b+1\), write
+\[
+ H_{b,k}(C):=\frac1{\mathcal T}\sum_t(N_{b,t}-k)_+.
+\]
+Convexity and the endpoint chord of the hinge give
+\[
+ (l\rho-k)_+\le H_{b,k}(C)\le\rho(l-k).
+\]
+The lower bound is attained by balanced cycles because the hinge is linear between consecutive integers. Set
+\[
+ e_{b,k}(\rho):=\rho(b+1-k)-((b+1)\rho-k)_+
+ =\min\{(b+1-k)\rho,k(1-\rho)\}.
+\]
+Its maximum over \([0,1]\) is \(k(b+1-k)/(b+1)\). Multiplying the lower hinge bound by nonpositive coefficients and the upper bound by positive coefficients in the revenue decomposition gives
+\[
+ \bar R(C)\le g(\rho)+\sum_{b,k}\max\{\psi_{b,k},0\}e_{b,k}(\rho)
+ \le\bar R(C_B)+E_B.
+\]
+Here \(g(\rho)\le\max_{\mathcal B}g\) follows from piecewise linearity without a concavity assumption. Every frequency in \(\mathcal B\) has reduced denominator at most \(\mathcal A+1\), giving the period bound.
+
+We first establish that the single block search is finite. Put \(r_H=\bar R(H)\) and \(r_L=\bar R(L)\). For \(\mathcal A\ge1\), consider any \(H^hL^m\) with \(h,m\ge1\), and let \(h'=\min\{h,\mathcal A\}\), \(m'=\min\{m,\mathcal A\}\). Beyond the first \(\mathcal A\) periods of a constant-price run, all remembered prices equal the current price. Removing such periods leaves every remaining history unchanged, so
+\[
+ (h+m)\bar R(H^hL^m)
+ =(h'+m')\bar R(H^{h'}L^{m'})
+       +(h-h')r_H+(m-m')r_L.
+\]
+Thus its average revenue is a convex combination of the shortened cycle revenue and the two constant-price revenues. Maximizing over \(\mathcal S\) therefore finds a best single block policy over all lengths, with at most \(\mathcal A^2+2\) candidates and period at most \(2\mathcal A\).
+
+For its revenue guarantee, endpoint evaluation of the decomposition gives
+\[
+ (1-\rho)r_H+\rho r_L
+ =g_0+g_1\rho+\sum_{b,k}\psi_{b,k}\rho(b+1-k).
+\]
+The upper hinge bound controls positive coefficients, while the lower bound controls negative coefficients. Therefore
+\[
+ \bar R(C)\le(1-\rho)r_H+\rho r_L
+             +\sum_{b,k}\max\{-\psi_{b,k},0\}e_{b,k}(\rho)
+ \le\max\{r_H,r_L\}+E_S
+ \le\bar R(C_S)+E_S.
+\]
+The better of \(C_B\) and \(C_S\) has loss bounded by each of \(E_B,E_S\), proving the combined guarantee. Proposition~\ref{thm:cycle} extends both cycle comparisons to all feasible infinite price paths. When \(\mathcal A=0\), both searches reduce to the constant prices, the sums are empty, and both candidates are optimal.
+\end{proof}
+
+\paragraph{Verification of the examples.}
+In the reinforcement example, the shares lie in \([0.10,0.30]\) for the stated parameter range. Interior curvatures are \(2\epsilon\), and terminal curvatures are \(-(0.04+\epsilon(k-1))\), giving \(E_B=11\epsilon/3\). In the fatigue example, shares lie in \([0.19,0.404]\), and the curvatures are \((-2\epsilon,0,\epsilon)\), giving \(E_S=\epsilon\). Direct evaluation of the candidate frequencies and single block calendars gives the reported policy revenues.
+
+At \(\epsilon=0.001\), exact node potentials certify the unrestricted optima. Encode the previous \(\mathcal A\) indicators as a binary integer \(s\), oldest first, and let \(w(s,d)\) be current revenue. For the reinforcement example, set
+\[
+ \lambda=\frac{1803}{2000},\qquad
+ h=\frac1{2000}(0,523,162,886,0,605,281,1054).
+\]
+For the fatigue example, set
+\[
+ \lambda=\frac{2401}{2000},\qquad
+ h=\frac1{2000}(2,1,2,0).
+\]
+In each case, every edge satisfies
+\[
+ \lambda+h(s)\ge w(s,d)+h((2s+d)\bmod 2^{\mathcal A}).
+\]
+The stated optimal cycle attains \(\lambda\), so summing the inequalities proves optimality over all cycles and infinite price paths.
+
+\subsection{General memory truncation}
+\label{app:general-truncation}
+\begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{prop:general-truncation}]
+For each affected age, the definition of \(\Delta^{\mathrm{tr}}_{a,J}\) bounds the demand error for every retained and omitted history. Multiplication by the current price, summation over ages, and averaging give the uniform revenue bound. For a full-model maximizer \(C^\star\),
+\[
+ \bar R(C_J^\star)
+ \ge\bar R_J(C_J^\star)-\varepsilon_J^{\mathrm{agg}}
+ \ge\bar R_J(C^\star)-\varepsilon_J^{\mathrm{agg}}
+ \ge\bar R^*-2\varepsilon_J^{\mathrm{agg}}.
+\]
+If \(\bar R_J\ge\bar R\) pointwise, then
+\(\bar R(C_J^\star)\ge\bar R_J^\star-\varepsilon_J^{\mathrm{agg}}
+\ge\bar R^*-\varepsilon_J^{\mathrm{agg}}\).
+If \(\bar R_J\le\bar R\) pointwise, then
+\(\bar R(C_J^\star)\ge\bar R_J^\star\ge\bar R^*-\varepsilon_J^{\mathrm{agg}}\).
+Both objectives have finite memory and bounded rewards, so maximizing cycles exist. The per-period error bound also applies directly to every infinite path, proving the stated scope.
+\end{proof}
+
+\paragraph{Midpoint and fading-activity bounds.}
+For fixed \((a,p,y)\), let \(L\) and \(U\) be the smallest and largest compatible full-model shares. Any approximating value \(v\) has error at least \(\max\{|L-v|,|U-v|\}\ge(U-L)/2\). The midpoint attains this lower bound and lies in \([0,1]\). For \(M_a=q^am_a\), both full and truncated shares lie in \([0,q^a]\), so \(\Delta^{\mathrm{tr}}_{a,J}\le q^a\). Summing the geometric tail gives the displayed policy bound.
+
+\begin{corollary}[A posteriori certification for candidate cycles]
+\label{cor:heuristic-certification}
+Under Proposition~\ref{prop:general-truncation}, set
+\(U_J=\bar R_J^\star+\varepsilon_J^{\mathrm{agg}}\). For every feasible cycle \(C\),
+\[
+ \bar R^*\le U_J,\qquad
+ \bar R^*-\bar R(C)\le U_J-\bar R(C).
+\]
+If \(\bar R(C)>0\), then \(\bar R(C)/\bar R^*\ge\bar R(C)/U_J\). When the truncated model bounds full-model demand from above, one may instead use \(U_J=\bar R_J^\star\).
+\end{corollary}
+\begin{proof}
+The upper bound follows from the uniform error comparison, or directly from the one-sided comparison. Subtract the candidate's true revenue for the additive certificate, and divide when it is positive for the ratio certificate.
+\end{proof}
+
+\paragraph{Multiplicative demand.}
+\label{app:mult-computation}
+\begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{prop:truncation}]
+For \(a>J\), let \(y\) and \(z\) count promotions in the retained \(J\) and omitted \(a-J\) periods. Then
+\[
+ M_a^{\mathrm{mul}}(p,y+z)
+ =M_{a,J}^{\mathrm{mul}}(p,y)\,s_1^zs_2^{a-J-z}.
+\]
+The omitted factor lies in \([s_2^{a-J},1]\), and \(M_{a,J}^{\mathrm{mul}}(p,y)\le s_1^{J+1}\). Therefore
+\[
+ 0\le M_{a,J}^{\mathrm{mul}}(p,y)-M_a^{\mathrm{mul}}(p,y+z)
+ \le s_1^{J+1}(1-s_2^{a-J}).
+\]
+The upper bound is attained at \(p=p^L\), \(y=J\), and \(z=0\). Apply the one-sided part of Proposition~\ref{prop:general-truncation}, divide by \(\mathcal A+1\), and bound the number of affected ages by \(\mathcal A+1\). This proves both the normalized error and the geometric policy bound.
+\end{proof}

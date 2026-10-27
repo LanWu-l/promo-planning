@@ -1,0 +1,23 @@
+% !TeX program = xelatex
+\documentclass[11pt]{article}
+\input{preamble}
+\input{layout}
+\input{metadata}
+
+\title{\PaperTitle}
+\author{\PaperAuthors}
+\date{\PaperDate}
+\hypersetup{pdftitle={\PaperTitle}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+\noindent\textbf{Keywords}\quad\input{keywords}
+
+\input{body}
+\input{references}
+\input{appendix-layout}
+\input{appendices}
+\end{document}
