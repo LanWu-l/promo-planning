@@ -1,67 +1,63 @@
-# Promotion frequency manuscript
+# Operations Research manuscript
 
-This repository contains the sources and figure assets needed to compile the
-preprint. Research code, data, reviews, earlier drafts and the previous Git
-history are preserved separately in ../supporting.
+The default manuscript uses the legacy `informs3.cls` with the Operations
+Research option and anonymous review formatting. Research code, earlier drafts,
+data, and verification records are preserved in `../supporting`.
 
-## Build the PDF
-
-Use XeLaTeX with a full TeX Live installation that provides Libertinus and the
-standard packages loaded in preamble.tex and layout.tex.
+## Build
 
     make
 
-The output is build/main.pdf. The equivalent command is
+Output: `build/main.pdf`, containing the main paper, references, submission
+tables, and electronic companion. The equivalent command is:
 
-    latexmk -xelatex -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build main.tex
+    latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build main.tex
 
-A direct XeLaTeX build can be run three times from this directory.
+Use pdfLaTeX with a full TeX Live installation. The local `informs3.cls` supplies
+the journal fonts, margins, headings, and front matter. No BibTeX, Biber, external
+data, or research scripts are needed to compile the manuscript.
 
-    mkdir -p build
-    xelatex -no-shell-escape -interaction=nonstopmode -halt-on-error -output-directory=build main.tex
+`make or-preview` is retained as a compatibility target and builds the same
+manuscript through `or-preview.tex` into `build/or-preview/or-preview.pdf`.
 
-The bibliography is complete in references.tex. No BibTeX, Biber, external data
-or research scripts are needed.
+## Edit
 
-## Edit the manuscript
+- `main.tex`: OR class selection and title-page fields.
+- `or-preamble.tex`: packages, author-year citations, theorem definitions, and
+  submission-table handling.
+- `abstract.tex`, `keywords.tex`: the accepted OR abstract and keywords.
+- `sections/`, `appendices/`: content, ordered by `body.tex` and `appendices.tex`.
+- `references.tex`: complete alphabetical author-year bibliography.
+- `appendix-layout.tex`: INFORMS electronic-companion switch.
+- `tables/`, `figures/`: frozen table fragments and figure assets.
 
-Edit the main sections in sections and the supporting proofs and results in
-appendices. The files body.tex and appendices.tex set their reading order.
-The files abstract.tex, keywords.tex and disclosure.tex contain the remaining
-front matter and disclosure. The generated table fragments are frozen in
-tables, and figures contains only the four assets used by the paper.
+The former article-class `preamble.tex` and `layout.tex` are retained as legacy
+files and are not loaded by `main.tex`. `abstract-or-draft.tex` now forwards to
+`abstract.tex` so there is only one maintained abstract.
 
-The author names, affiliations and order are set in metadata.tex. PaperAuthors
-controls the visible title block, and PaperAuthorNames supplies the plain text
-PDF metadata. PaperDate is empty so the PDF has no changing compilation date.
+## Review formatting
 
-## Use a journal template
+The default is `opre,blindrev` with 11-point, one-and-a-half spacing. The author
+names and affiliations remain recorded in `metadata.tex`; the review PDF omits
+them and leaves PDF author metadata empty. Main-paper tables are collected after
+the references, while figures remain embedded. EC tables accompany their
+supplementary discussion, with separate EC section, equation, table, figure, and
+page numbering.
 
-Use the destination template's document class, title block and layout. Keep
-the content files and copy the relevant package, notation and theorem
-definitions from preamble.tex into that template's preamble. Reuse existing
-definitions where the template supplies them. The preprint's fonts and margins
-are confined to layout.tex and need not be copied.
+The default PDF preserves the blue revision text. For a black review copy,
+define `\CleanCopy` before inputting `main.tex` in a local wrapper. The content
+sources retain their revision commands.
 
-Insert abstract.tex in the template's abstract field. Insert body.tex where
-the main paper begins and references.tex where the bibliography belongs.
-Apply the template's appendix settings in place of appendix-layout.tex and
-insert appendices.tex. Keep the relative content, tables and figures paths.
-The content files contain no INFORMS class commands.
+Area of review and subject classifications are intentionally unset. See
+[OR-PREVIEW.md](OR-PREVIEW.md) for the format migration and remaining editorial
+items, including the introduction's notation and the submission-length target.
 
-## Prepare the arXiv archive
+## Source archive
 
     make arxiv
 
-Upload build/arxiv-source.zip. Its root contains main.tex with all required
-inputs and four figure assets. It omits the generated manuscript PDF, build
-files, Git metadata, documentation and research material.
-
-Select main.tex as the main file, XeLaTeX as the compiler and TeX Live 2025 in
-the arXiv submission interface. The fonts are loaded by filename from TeX Live.
-The current arXiv guidance is available at
-[TeX Live at arXiv](https://info.arxiv.org/help/faq/texlive.html) and
-[TeX source preparation](https://info.arxiv.org/help/submit_tex.html).
-
-The prepared archive must still be processed and its generated PDF reviewed
-in arXiv. This repository does not upload or submit the paper.
+This creates `build/arxiv-source.zip` with the OR class and the complete active
+source tree. It omits unused layout/preview files, generated PDFs, research code,
+and build files. Select `main.tex` as the main file and pdfLaTeX as the compiler.
+The archive must still be processed and its output reviewed by the upload system;
+this repository does not submit or upload the paper.

@@ -3,6 +3,134 @@
 \section{Proofs and supplementary results for Section~\ref{sec:approximation}}
 \label{app:approximation}
 
+\begingroup\color{black}
+\subsection{Exact algorithms}
+\label{app:exact-algorithms}
+
+\begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{prop:exact-algorithms}]
+The graph has \(n=2^{\mathcal A+1}\) nodes and \(2n\) edges. For each state, the remembered counts for all ages are obtained by cumulative summation of its past-price indicators. Computing these counts and \(w(s)\) takes \(O(\mathcal A+1)\) operations per node, giving the preprocessing bound.
+
+For part (i), give each edge \(s\to s'\) weight \(w(s')\). Cycle means are unchanged, and Karp's algorithm computes the maximum mean \(\lambda\) in \(O(n\cdot2n)=O(4^{\mathcal A})\) operations \citep{karp1978}. Proposition~\ref{thm:cycle} identifies \(\lambda\) with \(\bar R^*\). To recover an optimal cycle within the same bound, subtract \(\lambda\) from every edge weight. All cycles then have nonpositive weight, so the maximum weight of any finite walk starting at \(s\), including the empty walk, is attained by a simple path of length at most \(n-1\). Let \(h(s)\) be this maximum; \(n-1\) dynamic-programming passes compute it in \(O(n\cdot2n)\) operations. Every edge satisfies
+\[
+ \lambda+h(s)\ge w(s')+h(s').
+\]
+Every edge on an optimal cycle has equality. Hence the subgraph of equality edges contains a cycle, found by a graph search, and every such cycle has mean \(\lambda\).
+
+For part (ii), fix an initial state \(u\). Let \(V_t^u(s,i)\) be the maximum revenue over \(t\)-step walks from \(u\) to \(s\) with \(i\) promotions among the appended prices. Initialize \(V_0^u(u,0)=0\) and all other entries to \(-\infty\). For every edge \(s\to s'\), update
+\[
+ V_{t+1}^u(s',i+d(s'))
+ \leftarrow
+ \max\{V_{t+1}^u(s',i+d(s')),\,V_t^u(s,i)+w(s')\},
+\]
+where \(d(s')\) is the promotion indicator of the last price in \(s'\), and entries with \(i+d(s')>m\) are discarded. The optimal average revenue is
+\[
+ \frac1{\mathcal T}\max_u V_{\mathcal T}^u(u,m).
+\]
+A closed walk enforces the periodic price history, including when \(\mathcal T<\mathcal A+1\); conversely, every feasible price cycle induces such a walk. Each initial state requires \(O(\mathcal T(m+1)n)\) operations. Enumerating all \(n\) initial states gives \(O(\mathcal T(m+1)4^{\mathcal A})\) operations, and storing predecessors recovers an optimal arrangement.
+\end{proof}
+\par\endgroup
+
+\subsection{Computational complexity of promotion arrangement}
+\label{app:arrangement-complexity}
+
+\begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{prop:arrangement-np-complete}]
+For the complexity statement, the input consists of rational prices, the rational market share table, a rational target \(R_0\), and integers \(\mathcal A,\mathcal T,m\), with \(1\le m\le\mathcal T\). We encode \(\mathcal T\) in unary. The \(\mathcal T\) promotion indicators then form a certificate of polynomial length. We can verify their sum and compute \(R(C)\) directly from the market share table using \(O(\mathcal T(\mathcal A+1)^2)\) arithmetic operations. The signs of \(\psi_{b,k}\) are also computable in polynomial time from the table. Exact rational arithmetic has polynomial bit complexity because the table and certificate have polynomial size, so the problem belongs to NP.
+
+For hardness, consider an undirected circulant graph on \(\mathbb Z_{\mathcal T}\), represented by its full first adjacency row, with connection set \(S\subseteq\{1,\ldots,\lfloor\mathcal T/2\rfloor\}\). Distinct vertices \(u,v\) are adjacent if \((u-v)\bmod\mathcal T\) belongs to
+\[
+    S'=S\cup\{\mathcal T-j:j\in S\}.
+\]
+Deciding whether such a graph has an independent set of size \(m\) is NP-complete: \citet{codenotti1998circulant} establish NP-hardness of clique on circulant graphs, and taking the graph complement preserves the circulant structure and exchanges cliques with independent sets. Their graphs are represented by the full first adjacency row, so \(\mathcal T\) is bounded by the source input length. We may restrict attention to \(\mathcal T\ge3\) and nonempty \(S\): excluded cases are trivial and can be mapped to fixed yes or no instances within this class.
+
+Given the graph and \(m\), set \(\mathcal A=\mathcal T-1\), \(p^L=1\), \(p^H=2\), and define
+\[
+    \varepsilon=\frac{1}{4\mathcal A^2},\qquad
+    \bar\beta_j^{\mathrm{loc}}=\varepsilon\mathbf 1\{j\in S'\}
+    \quad (1\le j\le\mathcal A),\qquad
+    \bar\beta_{\mathcal A+1}^{\mathrm{loc}}=0.
+\]
+Let \(\beta_0^{\mathrm{aff}}=0\), \(\beta_a^{\mathrm{aff}}=\bar\beta_a^{\mathrm{loc}}-\bar\beta_{a+1}^{\mathrm{loc}}\) for \(a=1,\ldots,\mathcal A\), and \(M_a(p,y)=1/2+\beta_a^{\mathrm{aff}} y\). Then \(|\beta_a^{\mathrm{aff}}|\le\varepsilon\), and all market shares satisfy
+\[
+    \frac12-\frac{1}{4\mathcal A}
+    \le M_a(p,y)\le
+    \frac12+\frac{1}{4\mathcal A},
+\]
+so they lie in \([1/4,3/4]\). The demand table has \(O(\mathcal T^2)\) entries, each with polynomial bit length. Hence the construction, including the unary encoding of \(\mathcal T\), has polynomial size.
+
+\textcolor{black}{The constructed \(\psi_{b,k}\) have mixed signs.} For this affine specification, \(\psi_{b,k}=-(\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}})\), taking \(\beta_{\mathcal A+1}^{\mathrm{aff}}=0\). Let \(r=\max S'\). Symmetry and nonemptiness of \(S'\) imply \(r\ge2\), and the construction gives
+\[
+    \psi_{r,1}=-\varepsilon<0,\qquad
+    \psi_{r-1,1}=2\varepsilon-\bar\beta_{r-1}^{\mathrm{loc}}
+    \ge\varepsilon>0.
+\]
+Thus the reduction lies within the stated class of mixed-sign coefficients.
+
+For a cycle with \(m\) promotions, write \(d_t=\mathbf 1\{p_t=p^L\}\) and recall the promotion pair count at lag \(j\), \(P_j(C)=\sum_{t=1}^{\mathcal T}d_t d_{t-j}\). The construction uses the pooled lag coefficients \(\bar\beta_j^{\mathrm{loc}}\) from Section~\ref{sec:affine-location-dependent}, with \(\beta_{a,j}^{\mathrm{loc}}=\beta_a^{\mathrm{aff}}\) for \(1\le j\le a\). Telescoping gives \(\sum_{a=j}^{\mathcal A}\beta_a^{\mathrm{aff}}=\bar\beta_j^{\mathrm{loc}}\), so direct substitution into revenue yields
+\begin{align*}
+    R(C)
+    &=\sum_{t=1}^{\mathcal T}(2-d_t)
+      \left(\frac{\mathcal A+1}{2}
+      +\sum_{j=1}^{\mathcal A}\bar\beta_j^{\mathrm{loc}}d_{t-j}\right)\\
+    &=\frac{(2\mathcal T-m)(\mathcal A+1)}{2}
+      +2m\sum_{j=1}^{\mathcal A}\bar\beta_j^{\mathrm{loc}}
+      -\sum_{j=1}^{\mathcal A}\bar\beta_j^{\mathrm{loc}}P_j(C)\\
+    &=K_{\mathcal T,m}
+      -\varepsilon\sum_{j\in S'}P_j(C),
+\end{align*}
+where the baseline from Proposition~\ref{thm:exposure-decomposition} is
+\[
+    K_{\mathcal T,m}
+    =\frac{(2\mathcal T-m)(\mathcal A+1)}{2}
+      +2m\varepsilon|S'|.
+\]
+This term is independent of the arrangement and computable in polynomial time. Set \(R_0=K_{\mathcal T,m}\).
+
+The promotional dates form a vertex set \(V_L\subseteq\mathbb Z_{\mathcal T}\) of size \(m\). Because \(\mathcal A=\mathcal T-1\), the sum \(\sum_{j\in S'}P_j(C)\) counts every ordered pair of adjacent vertices in \(V_L\), and therefore equals twice the number of graph edges within \(V_L\). This remains true when \(\mathcal T\) is even and \(j=\mathcal T/2\): the two orientations are counted at their respective endpoints. It follows that \(R(C)\ge R_0\) if and only if \(V_L\) is an independent set of size \(m\). This proves NP-hardness and, together with membership in NP, NP-completeness. An exact optimizer would solve the decision problem by comparing its optimal revenue with \(R_0\), establishing the final claim.
+\end{proof}
+
+\begingroup\color{black}
+\subsection{Long optimal periods}
+\label{app:long-optimal-periods}
+
+\begin{table}[ht]
+\centering\small
+\caption{Demand for the nine-period example in Section~\ref{sec:long-optimal-periods}. Entries are exact market shares for \(y=0,\ldots,a\), with \(\mathcal A=4\), \(p^L=1\), and \(p^H=2\).}
+\label{tab:long-period-demand}
+\begin{tabular}{cll}
+\toprule
+\(a\)&\(M_a(p^H,\cdot)\)&\(M_a(p^L,\cdot)\)\\
+\midrule
+0&\((0.122)\)&\((0.892)\)\\
+1&\((0.175,\ 0.572)\)&\((0.182,\ 0.005)\)\\
+2&\((0.401,\ 0.659,\ 0.028)\)&\((0,\ 0.910,\ 0.255)\)\\
+3&\((0.280,\ 0.694,\ 0.020,\ 0.759)\)&\((0.668,\ 0.786,\ 0.721,\ 0.873)\)\\
+4&\((0.396,\ 0.018,\ 0.165,\ 0.833,\ 0.219)\)&\((0.267,\ 0.965,\ 0.152,\ 0.815,\ 0.028)\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{proof}[\normalfont\bfseries Verification of the nine-period example]
+All entries in Table~\ref{tab:long-period-demand} lie in \([0,1]\). \textcolor{black}{Direct evaluation of the nine-period cycle with promotion indicators \((0,0,1,0,1,1,1,0,1)\) gives \(\mu=16271/4500\).} To certify global optimality, encode the previous four promotion indicators, oldest first, as \(s\in\{0,\ldots,15\}\). Choosing the current indicator \(d\) gives next state \(s'=(2s+d)\bmod16\) and revenue
+\[
+ w(s,d)=(2-d)\sum_{a=0}^4
+ M_a\!\left(2-d,\sum_{j=1}^a d_{t-j}\right).
+\]
+Define potentials \(h(s)\) by listing \(9000h(s)\) in increasing state order, row by row:
+\[
+\begin{array}{rrrrrrrr}
+0&5701&1073&2455&1230&0&1695&16772\\
+0&8347&1358&8422&0&8524&7662&5720
+\end{array}
+\]
+For all \(32\) state-action pairs, exact substitution gives
+\(\mu+h(s)\ge w(s,d)+h(s')\).
+Summing these inequalities bounds every cycle's average revenue by \(\mu\); bounded potentials give the same bound for every infinite price path. The stated cycle attains it.
+
+Exact enumeration of all \(\sum_{\mathcal T=1}^8 2^{\mathcal T}=510\) binary cycles gives maximum \(14179/4000\), attained by the repeated cycle \((0,1,1,1)\). Since this is strictly below \(\mu\), the shortest optimal period is nine.
+\end{proof}
+
+\par\endgroup
+
 \subsection{Balanced and single block guarantees}
 \label{app:simple-policy-guarantees}
 \hypertarget{proof-mixed-curvature}{}
@@ -50,20 +178,15 @@ The upper hinge bound controls positive coefficients, while the lower bound cont
 The better of \(C_B\) and \(C_S\) has loss bounded by each of \(E_B,E_S\), proving the combined guarantee. Proposition~\ref{thm:cycle} extends both cycle comparisons to all feasible infinite price paths. When \(\mathcal A=0\), both searches reduce to the constant prices, the sums are empty, and both candidates are optimal.
 \end{proof}
 
-\paragraph{Verification of the examples.}
-In the reinforcement example, the shares lie in \([0.10,0.30]\) for the stated parameter range. Interior curvatures are \(2\epsilon\), and terminal curvatures are \(-(0.04+\epsilon(k-1))\), giving \(E_B=11\epsilon/3\). In the fatigue example, shares lie in \([0.19,0.404]\), and the curvatures are \((-2\epsilon,0,\epsilon)\), giving \(E_S=\epsilon\). Direct evaluation of the candidate frequencies and single block calendars gives the reported policy revenues.
+\paragraph{Verification of the reinforcement example.}
+In the reinforcement example, the shares lie in \([0.10,0.30]\) for the stated parameter range. \textcolor{black}{Interior second differences are \(2\epsilon\), and terminal ones are} \(-(0.04+\epsilon(k-1))\), giving \(E_B=11\epsilon/3\). \textcolor{blue}{Direct evaluation gives \(\bar R(C_B)=0.901\) for \(C_B=HL\) and \(\bar R(C_S)=0.9015\) for \(C_S=HHLL\) at \(\epsilon=0.001\).}
 
-At \(\epsilon=0.001\), exact node potentials certify the unrestricted optima. Encode the previous \(\mathcal A\) indicators as a binary integer \(s\), oldest first, and let \(w(s,d)\) be current revenue. For the reinforcement example, set
+At \(\epsilon=0.001\), exact node potentials certify the unrestricted optimum. Encode the previous \(\mathcal A\) indicators as a binary integer \(s\), oldest first, and let \(w(s,d)\) be current revenue. Set
 \[
  \lambda=\frac{1803}{2000},\qquad
  h=\frac1{2000}(0,523,162,886,0,605,281,1054).
 \]
-For the fatigue example, set
-\[
- \lambda=\frac{2401}{2000},\qquad
- h=\frac1{2000}(2,1,2,0).
-\]
-In each case, every edge satisfies
+Every edge satisfies
 \[
  \lambda+h(s)\ge w(s,d)+h((2s+d)\bmod 2^{\mathcal A}).
 \]
@@ -88,7 +211,12 @@ Both objectives have finite memory and bounded rewards, so maximizing cycles exi
 \end{proof}
 
 \paragraph{Midpoint and fading-activity bounds.}
-For fixed \((a,p,y)\), let \(L\) and \(U\) be the smallest and largest compatible full-model shares. Any approximating value \(v\) has error at least \(\max\{|L-v|,|U-v|\}\ge(U-L)/2\). The midpoint attains this lower bound and lies in \([0,1]\). For \(M_a=q^am_a\), both full and truncated shares lie in \([0,q^a]\), so \(\Delta^{\mathrm{tr}}_{a,J}\le q^a\). Summing the geometric tail gives the displayed policy bound.
+For fixed \((a,p,y)\), let \(L\) and \(U\) be the smallest and largest compatible full-model shares. Any approximating value \(v\) has error at least \(\max\{|L-v|,|U-v|\}\ge(U-L)/2\). The midpoint attains this lower bound and lies in \([0,1]\). For \(M_a(p,y)=q^a m_a(p,y)\), where \(0<q<1\) and \(0\le m_a\le1\), choose \(M_{a,J}(p,y)=q^a m_a(p,y)\) on the retained domain. Both full and truncated shares lie in \([0,q^a]\), so \(\Delta^{\mathrm{tr}}_{a,J}\le q^a\). Summing the geometric tail gives
+\[
+ 2\varepsilon_J^{\mathrm{agg}}
+ \le\frac{2p^Hq^{J+1}}{1-q}.
+\]
+Thus fading activity can justify short memory even with nonlinear demand. Dividing revenues and bounds by \(\mathcal A+1\) gives the corresponding normalized guarantees.
 
 \begin{corollary}[A posteriori certification for candidate cycles]
 \label{cor:heuristic-certification}
@@ -106,7 +234,7 @@ The upper bound follows from the uniform error comparison, or directly from the 
 
 \paragraph{Multiplicative demand.}
 \label{app:mult-computation}
-\begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{prop:truncation}]
+\begin{proof}[\normalfont\bfseries Derivation of the multiplicative bound~\eqref{eq:multiplicative-truncation}]
 For \(a>J\), let \(y\) and \(z\) count promotions in the retained \(J\) and omitted \(a-J\) periods. Then
 \[
  M_a^{\mathrm{mul}}(p,y+z)

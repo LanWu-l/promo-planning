@@ -1,14 +1,16 @@
 \section{Proofs and supplementary results for Section~3}
 \label{app:general-proofs}
 \subsection{Market share representation and revenue decomposition}
-\begin{proof}[\normalfont\bfseries Proof of Lemma~\ref{lem:weighted-tail-sum}]
-For \(y=0,\ldots,a\), the sum of the first differences telescopes to give
-\[
- \alpha_a^j+\sum_{k=1}^y\Delta_{a,k}^j=M_a^j(y).
-\]
-Evaluating at zero and taking consecutive differences proves uniqueness, separately for each age and current price.
-\end{proof}
+\phantomsection\label{app:revenue-decomposition-proof}
 \begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{thm:exposure-decomposition}]
+{\color{black}
+For \(x_+=\max\{x,0\}\), define
+\[
+ V_{b,k}(C)=\sum_{t=1}^{\mathcal T}(N_{b,t}(C)-k)_+,
+ \qquad V_{-1,k}=0,\qquad N_{-1,t}=0.
+\]
+Since \(y_{a,t}=N_{a-1,t-1}\), these quantities collect the contributions of remembered promotions over the cycle.
+\par}
 For \(a\ge1\), write the historical response at the regular price as
 \[
  M_a^H(y)-\alpha_a^H
@@ -89,11 +91,11 @@ Substituting \(V_{b,k}=\sum_t(N_{b,t}-k)_+\) proves the decomposition. The secon
             \left\lceil \frac{km}{\mathcal T}\right\rceil
         \right\}.
     \]
-    This holds for every \(k\), and therefore in particular for all payoff relevant block lengths \(k=1,\ldots,\mathcal A+1\). Hence the constructed cycle is balanced.
+    This holds for every \(k\), and therefore in particular for all \textcolor{black}{payoff relevant window lengths} \(k=1,\ldots,\mathcal A+1\). Hence the constructed cycle is balanced.
 \end{proof}
 
-\paragraph{Balanced cycle uniqueness when \texorpdfstring{\(\mathcal T\le \mathcal A+1\)}{cycle length <= memory depth + 1}.}
-We prove uniqueness by induction on \(\mathcal T\). The cases \(m=0\), \(m=1\), and \(m=\mathcal T\) each have only one rotation class, so assume \(1<m<\mathcal T\). When \(\mathcal T\le\mathcal A+1\), balance applies to all block lengths through \(\mathcal T\). Write the promotion positions as \(u_1<\cdots<u_m\), extend them by \(u_{i+m}=u_i+\mathcal T\), and define the cyclic gaps \(g_i=u_{i+1}-u_i\).
+\paragraph{Balanced cycle uniqueness when \texorpdfstring{\(\mathcal T\le \mathcal A+1\)}{cycle length <= memory length + 1}.}
+We prove uniqueness by induction on \(\mathcal T\). The cases \(m=0\), \(m=1\), and \(m=\mathcal T\) each have only one rotation class, so assume \(1<m<\mathcal T\). When \(\mathcal T\le\mathcal A+1\), balance applies to \textcolor{black}{all window lengths through \(\mathcal T\)}. Write the promotion positions as \(u_1<\cdots<u_m\), extend them by \(u_{i+m}=u_i+\mathcal T\), and define the cyclic gaps \(g_i=u_{i+1}-u_i\).
 
 For \(1\le q<m\), put \(D_{i,q}:=u_{i+q}-u_i\). The interval from \(u_i+1\) to \(u_{i+q}-1\) has length \(D_{i,q}-1\) and contains \(q-1\) promotions. Including both endpoints gives length \(D_{i,q}+1\) and \(q+1\) promotions. Balance, with the empty interval interpreted as having count zero, gives
 \[
@@ -132,9 +134,9 @@ Fix \(b\) and a discretely convex function \(\phi\) on \(\{0,\ldots,b+1\}\). The
             \[
                 \sum_{t=1}^{\mathcal T}N_{b,t}=(b+1)m.
             \]
-            Thus \(\sum_t\phi(N_{b,t})\) is minimized when the window counts differ by at most one. If \(x_i\ge x_j+2\), replacing \((x_i,x_j)\) by \((x_i-1,x_j+1)\) weakly decreases the sum. A balanced cycle realizes this equalized vector simultaneously at every depth. For a strictly convex function, the decrease is strict whenever the numbers of promotions in two windows differ by at least two. Applying the same comparison to the negative of a strictly concave function gives a strict increase in its total contribution.
+            Thus \(\sum_t\phi(N_{b,t})\) is minimized when the window counts differ by at most one. If \(x_i\ge x_j+2\), replacing \((x_i,x_j)\) by \((x_i-1,x_j+1)\) weakly decreases the sum. A balanced cycle realizes this equalized vector \textcolor{black}{simultaneously for every window length}. For a strictly convex function, the decrease is strict whenever the numbers of promotions in two windows differ by at least two. Applying the same comparison to the negative of a strictly concave function gives a strict increase in its total contribution.
 
-            For the strict comparison, suppose \(\mathcal T\le\mathcal A+1\) and the cycle is nonbalanced. Since the average number of promotions is fixed at each window length, nonbalance implies that two windows have numbers of promotions differing by at least two. Removing complete cycles from both windows subtracts the same multiple of \(m\) and preserves this difference. The residual length cannot be zero, one, or \(\mathcal T-1\), because the numbers of promotions in windows of these lengths differ by at most one. Thus such a pair exists at some depth \(1\le b\le\mathcal T-2\). At that depth, strict convexity or strict concavity makes the comparison with a balanced cycle strict.
+            For the strict comparison, suppose \(\mathcal T\le\mathcal A+1\) and the cycle is nonbalanced. Since the average number of promotions is fixed at each window length, nonbalance implies that two windows have numbers of promotions differing by at least two. Removing complete cycles from both windows subtracts the same multiple of \(m\) and preserves this difference. The residual length cannot be zero, one, or \(\mathcal T-1\), because the numbers of promotions in windows of these lengths differ by at most one. \textcolor{black}{Thus such a pair exists for some \(1\le b\le\mathcal T-2\). For that window length,} strict convexity or strict concavity makes the comparison with a balanced cycle strict.
 
             For the maximum, identify positions with the vertices of the cyclic group \(\mathbb Z_{\mathcal T}\). We first establish the required polarization inequality. Let \(\sigma\) be any reflection of the cycle and let \(H\) be one of the two closed semicircles bounded by its reflection axis. From each nonfixed orbit \(\{i,\sigma(i)\}\), denote by \(i\) the representative in \(H\). The polarization toward \(H\) of the promotion set \(P=\{i:d_i=1\}\) keeps the number of promotions in every reflected pair but places the promotion in \(H\) whenever exactly one member of that pair is promotional. Equivalently,
             \[
@@ -171,7 +173,7 @@ Fix \(b\) and a discretely convex function \(\phi\) on \(\{0,\ldots,b+1\}\). The
             \[
                 \varphi(x')+\varphi(y')\ge \varphi(x)+\varphi(y).
             \]
-            Pairing every residual interval with its reflection shows that one polarization weakly increases \(\sum_t\phi(N_{b,t})\). The argument uses the same polarization for every depth and convex function, so all convex window sums increase simultaneously.
+            Pairing every residual interval with its reflection shows that one polarization weakly increases \(\sum_t\phi(N_{b,t})\). The argument uses the same polarization \textcolor{black}{for every window length and convex function}, so all convex window sums increase simultaneously.
 
             It remains to show that these polarizations lead to a single promotion block. Embed the vertices on a circle and choose a reference point \(c\) on the circle whose arc distances to the vertices are all distinct. For each reflection \(\sigma\), let \(H_{\sigma,c}\) contain the vertices \(i\) satisfying
             \(\operatorname{dist}(i,c)<\operatorname{dist}(\sigma(i),c)\), together with any vertices fixed by \(\sigma\). This is one of the two semicircles bounded by the reflection axis. Every nontrivial polarization toward \(H_{\sigma,c}\) strictly decreases the potential
@@ -181,8 +183,15 @@ Fix \(b\) and a discretely convex function \(\phi\) on \(\{0,\ldots,b+1\}\). The
             because each moved promotion is replaced by its strictly closer reflected partner. Since there are finitely many promotion sets, repeated centered polarizations terminate. At termination, \(P\) must consist of the \(m\) vertices closest to \(c\). Otherwise, some regular price vertex \(u\notin P\) would be closer to \(c\) than a promotional vertex \(v\in P\), and the reflection \(\sigma(i)=u+v-i\pmod \mathcal T\), which exchanges \(u\) and \(v\), would produce another nontrivial centered polarization. The \(m\) closest vertices to \(c\) are consecutive. Hence the terminal cycle has a single promotion block, and because no polarization decreases any \(\sum_t\phi(N_{b,t})\), a single block cycle maximizes every convex window sum. Applying the argument to the negative of a concave function gives the concave comparisons.
 \end{proof}
 
+\begingroup\color{black}
+\phantomsection\label{app:arrangement-theorem-proof}
+\begin{proof}[\normalfont\bfseries Proof of Theorem~\ref{thm:general-sign-arrangement}]
+At fixed \((\mathcal T,m)\), arrangement affects revenue only through \(\sum_{b,t}F_b(N_{b,t})\). A balanced cycle maximizes the sum for each concave \(F_b\), while a single block cycle maximizes it for each convex \(F_b\). Lemma~\ref{lem:overlap-extrema} therefore establishes parts (i) and (ii). For uniqueness under part (i), suppose \(\mathcal T\le\mathcal A+1\) and the stated strict inequalities hold. As shown in \hyperref[app:overlap-proof]{the proof of Lemma~\ref*{lem:overlap-extrema}} in Section~\ref{app:general-proofs} of the supplementary appendix, every nonbalanced cycle has two windows of some length \(b+1\), with \(1\le b\le\mathcal T-2\), whose numbers of promotions differ by at least two. Strict concavity of the corresponding \(F_b\) makes its total contribution strictly smaller than in a balanced cycle, while concavity gives weak comparisons \textcolor{black}{for all other window lengths}. Hence every nonbalanced cycle has strictly lower revenue. Uniqueness of balanced cycles up to rotation completes the argument.
+\end{proof}
+\par\endgroup
+
 \paragraph{Numerical illustration.}
-The numerical illustration shows how the market share function changes the preferred arrangement at a common promotion frequency. Set \(\mathcal T=12\), \(m=4\), \(\mathcal A=5\), \(p^L=1\), and \(p^H=1.8\). We enumerate all \(\binom{12}{4}=495\) labeled cycles, each with frequency \(1/3\), under five market share functions. Each specification is a special case of \(M_a(p,y)\) expressed through
+The numerical illustration shows how the market share function changes the preferred arrangement at a common promotion frequency. Set \(\mathcal T=12\), \(m=4\), \(\mathcal A=5\), \(p^L=1\), and \(p^H=1.8\). We enumerate all \(\binom{12}{4}=495\) labeled cycles, each with frequency \(1/3\), under three market share functions. Each specification is a special case of \(M_a(p,y)\) expressed through
 \[
     x=y+\mathbf1\{p=p^L\},
 \]
@@ -202,16 +211,6 @@ which counts remembered past promotions together with the current promotion. Tab
         \end{array}\) & \(
             \begin{array}{@{}l@{}}(0,0,0,0,0,0,\\0,0,1,1,1,1)
         \end{array}\) & 7.88\% \\
-        \(M_a(p,y)=0.04+0.2(0.84)^a(1-0.15^x)\) & \(
-            \begin{array}{@{}l@{}}(0,0,1,0,0,1,\\0,0,1,0,0,1)
-        \end{array}\) & \(
-            \begin{array}{@{}l@{}}(0,0,0,0,0,0,\\0,0,1,1,1,1)
-        \end{array}\) & 27.54\% \\
-        \(M_a(p,y)=0.04+0.008(0.85)^a x^3\) & \(
-            \begin{array}{@{}l@{}}(0,0,0,0,0,0,\\0,0,1,1,1,1)
-        \end{array}\) & \(
-            \begin{array}{@{}l@{}}(0,0,1,0,0,1,\\0,0,1,0,0,1)
-        \end{array}\) & 31.70\% \\
         \(M_a(p,y)=0.04+0.48(0.85)^a\1\{x\ge2\}\) & \(
             \begin{array}{@{}l@{}}(0,0,0,0,1,1,\\0,0,0,0,1,1)
         \end{array}\) & \(
@@ -227,7 +226,7 @@ which counts remembered past promotions together with the current promotion. Tab
 
 \end{table}
 
-For these parameter values, balanced arrangements attain the highest revenue under the affine and concave specifications, while single block arrangements do so under the cubic and multiplicative specifications. The threshold market share function favors two separated promotion blocks. These comparisons incorporate both the demand generated by each cycle and the transaction prices.
+For these parameter values, a balanced arrangement attains the highest revenue under the affine specification, a single promotion block does so under the multiplicative specification, and the threshold response favors two separated promotion blocks within the prescribed twelve-period cycle. These comparisons incorporate both the demand generated by each cycle and the transaction prices.
 
 \subsection{Promotion frequency for balanced arrangements}
 
@@ -275,6 +274,13 @@ Thus \(C^\star\) maximizes average revenue over all cycles. Proposition~\ref{thm
 
 
 
+\begingroup\color{black}
+\begin{proof}[\normalfont\bfseries Proof of Corollary~\ref{cor:balanced-frequency-cap}]
+By Proposition~\ref{thm:pwl}, \(g\) is concave and affine between consecutive points of \(\mathcal B\). Its maximum over \([0,\bar\rho]\) is therefore attained at a point of \((\mathcal B\cap[0,\bar\rho])\cup\{\bar\rho\}\). Every such point is rational, so Lemma~\ref{lem:balanced-exists} gives a balanced cycle at a maximizing frequency. Theorem~\ref{thm:general-sign-arrangement} and Proposition~\ref{thm:ratio} imply that every feasible cycle \(C\) satisfies \(\bar R(C)\le g(\rho(C))\), establishing optimality. There are \(O(\mathcal A^2+1)\) candidates, each requiring \(O(\mathcal A+1)\) operations given the tables of \(F_b\), so the search costs \(O(\mathcal A^3+1)\). If an unconstrained maximizer lies at or above \(\bar\rho\), concavity makes \(g\) nondecreasing on \([0,\bar\rho]\), so the cap is an optimal frequency, possibly tied with smaller frequencies. A binding cap can require a longer period than \(\mathcal A+1\): the period bound becomes the maximum of \(\mathcal A+1\) and the reduced denominator of \(\bar\rho\).
+\end{proof}
+
+\par\endgroup
+
 \hypertarget{proof-sharp-period}{}
 \begin{proof}[\normalfont\bfseries Sharpness of the period bound in Proposition~\ref{thm:pwl}]
 Fix \(\mathcal A\ge1\), set \(L=\mathcal A+1\), \(p^L=1\), \(p^H=2\), and let
@@ -287,7 +293,7 @@ These shares lie in \([\alpha,\alpha+\mathcal A\beta]\subset(0,1)\). Proposition
 \end{proof}
 
 \begin{algorithm}[htbp]
-\caption{Balanced frequency search under concave window contributions}
+\caption{Balanced frequency search under concave window contribution functions}
 \label{alg:general-balanced-frequency}
 \begin{algorithmic}[1]
 \STATE Form \(\mathcal B=\{0,1\}\cup\{j/(b+1):1\le b\le\mathcal A,\ 1\le j\le b\}\).
@@ -310,13 +316,14 @@ These shares lie in \([\alpha,\alpha+\mathcal A\beta]\subset(0,1)\). Proposition
 \STATE Construct the corresponding balanced cycle by Lemma~\ref{lem:balanced-exists}.
 \end{algorithmic}
 \end{algorithm}
-Given the window contribution tables, each frequency evaluation takes \(O(\mathcal A)\) arithmetic operations. There are \(O(\mathcal A^2)\) candidates, giving \(O(\mathcal A^3)\) operations and \(O(\mathcal A^2)\) space for \(\mathcal A\ge1\). At \(\mathcal A=0\), compare the two constant prices. These are unit cost arithmetic bounds.
+Given the tables of \(F_b\), each frequency evaluation takes \(O(\mathcal A)\) arithmetic operations. There are \(O(\mathcal A^2)\) candidates, giving \(O(\mathcal A^3)\) operations and \(O(\mathcal A^2)\) space for \(\mathcal A\ge1\). At \(\mathcal A=0\), compare the two constant prices. These are unit cost arithmetic bounds.
 
 \FloatBarrier
 
-\subsection{Promotion frequency under convex window contributions}
+\subsection{Promotion frequency under convex window contribution functions}
+\label{app:constant-price-proof}
 \begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{prop:general-cluster-frequency}]
-Discrete convexity bounds each window contribution by its endpoint chord, giving
+Discrete convexity bounds each \(F_b(n)\) by its endpoint chord, giving
 \[
  F_b(n)\le\left(1-\frac n{b+1}\right)F_b(0)
  +\frac n{b+1}F_b(b+1),\qquad n=0,\ldots,b+1.
@@ -328,6 +335,33 @@ Since \(F_b(0)=0\) and \(\mathcal T^{-1}\sum_tN_{b,t}=(b+1)\rho\), Proposition~\
 \]
 To identify the bracket, evaluate the revenue decomposition at the two constant cycles. Their revenues are \(g_0\) and \(g_0+g_1+\sum_bF_b(b+1)\). Their difference is \(D\). The upper bound is maximized at \(\rho=0\) if \(D\le0\), and at \(\rho=1\) if \(D\ge0\). The corresponding constant cycle attains the bound. Both are optimal when \(D=0\). Proposition~\ref{thm:cycle} extends optimality to all feasible infinite price paths.
 \end{proof}
+
+\begingroup\color{black}
+\subsubsection{Promotion-frequency cap}
+\label{app:convex-frequency-cap}
+For every cycle with \(\rho\le\bar\rho\), the preceding chord bound gives \(\bar R(C)\le g_0+\rho D\). If \(D\le0\), the constant regular price attains the resulting bound \(g_0\). Suppose \(D>0\) and write the rational cap as \(\bar\rho=u/v\), with \(0<u<v\).
+
+Let \(C_{h,m}\) consist of \(h\) regular-price periods followed by \(m\) promotional periods. If \(\mathcal A\ge1\) and \(h,m\ge\mathcal A\), periods beyond the first \(\mathcal A\) in either block have homogeneous remembered histories. Removing them preserves all remaining histories, so
+\[
+    (h+m)\bar R(C_{h,m})
+    =2\mathcal A\bar R(C_{\mathcal A,\mathcal A})
+     +(h-\mathcal A)g_0+(m-\mathcal A)(g_0+D).
+\]
+Taking \(h=n(v-u)\) and \(m=nu\) for sufficiently large \(n\) gives
+\[
+    \bar R(C_{h,m})
+    =g_0+\bar\rho D+
+      \frac{2\mathcal A\bar R(C_{\mathcal A,\mathcal A})
+       -\mathcal A(2g_0+D)}{h+m}
+    \longrightarrow g_0+\bar\rho D.
+\]
+Together with the chord bound, this proves the supremum formula. For \(\mathcal A=0\), revenue equals \(g_0+\rho D\), so any cycle at the rational frequency \(\bar\rho\) attains the value directly.
+
+For nonattainment, suppose \(\psi_{b,k}>0\) for some \(1\le k\le b\le\mathcal A\). The hinge \((n-k)_+\) lies strictly below its endpoint chord at every integer \(0<n<b+1\). Because all coefficients in \(F_b\) are nonnegative, \(F_b\) also lies strictly below its chord at every such \(n\). Any nonconstant cycle contains two consecutive periods with different prices, hence a window of length \(b+1\) with an interior promotion count. Its revenue is therefore strictly less than \(g_0+\rho D\le g_0+\bar\rho D\). The constant regular price earns \(g_0<g_0+\bar\rho D\), while the constant promotional price is infeasible. Thus no finite cycle attains the supremum.
+
+Finally, imposing \(\mathcal T\le\mathcal T_{\max}\) leaves finitely many cycles. Theorem~\ref{thm:general-sign-arrangement}(ii) replaces any feasible cycle by a single block cycle with the same \((\mathcal T,m)\) and weakly higher revenue. Hence it suffices to enumerate the nonnegative integer pairs \((h,m)\) satisfying \(1\le h+m\le\mathcal T_{\max}\) and \(m/(h+m)\le\bar\rho\). There are \(O(\mathcal T_{\max}^2)\) pairs, including a constant regular-price cycle.
+
+\par\endgroup
 
 \subsection{Heterogeneous active lifetimes}
 Suppose type \(i\) has proportion \(\lambda_i>0\) in each arriving cohort, maximum active age \(\mathcal A_i\), and count-based market share \(M_{i,a}(p,y)\), with \(\sum_{i=1}^K\lambda_i=1\). All types face the same price path and remember prices since arrival. Write \(\mathcal A_{\max}=\max_i\mathcal A_i\).
@@ -345,8 +379,8 @@ where
  \qquad F_b^{\mathrm{het}}=\sum_i\lambda_iF_b^{(i)},\qquad
  \psi_{b,k}^{\mathrm{het}}=\sum_i\lambda_i\psi_{b,k}^{(i)}.
 \]
-The arrangement and frequency results apply with \(\mathcal A_{\max}\) replacing \(\mathcal A\), whenever the aggregate window contributions satisfy the corresponding concavity or convexity conditions. Individual types need not satisfy these conditions.
+The arrangement and frequency results apply with \(\mathcal A_{\max}\) replacing \(\mathcal A\), \textcolor{black}{whenever the aggregate \(F_b^{\mathrm{het}}\) satisfy the corresponding concavity or convexity conditions.} Individual types need not satisfy these conditions.
 \end{proposition}
 \begin{proof}
-Aggregate revenue is \(\sum_i\lambda_iR_i(C)\). Apply Proposition~\ref{thm:exposure-decomposition} separately to each type. All type-specific decompositions use the same window counts \(N_{b,t}(C)\), so collecting the terms gives the stated weighted sums. Taking second differences gives the formula for \(\psi_{b,k}^{\mathrm{het}}\). The window comparisons and interpolation arguments then apply to the aggregate contributions. Aggregate rewards have finite history length \(\mathcal A_{\max}\), so Proposition~\ref{thm:cycle} also applies.
+Aggregate revenue is \(\sum_i\lambda_iR_i(C)\). Apply Proposition~\ref{thm:exposure-decomposition} separately to each type. All type-specific decompositions use the same window counts \(N_{b,t}(C)\), so collecting the terms gives the stated weighted sums. Taking second differences gives the formula for \(\psi_{b,k}^{\mathrm{het}}\). The window comparisons and interpolation arguments then apply to the aggregate window contribution functions \(F_b^{\mathrm{het}}\). Aggregate rewards have finite history length \(\mathcal A_{\max}\), so Proposition~\ref{thm:cycle} also applies.
 \end{proof}

@@ -2,19 +2,19 @@
 \label{sec:model}
 
 \subsection{Model setup}
-We consider the following model.
-A seller offers a single product and chooses its posted price in each period to maximize long run average revenue. That is, in period \(t=0,1,2,\ldots\), the seller posts the same price to all active customers,
+A seller offers a single product and chooses prices to maximize long-run average revenue. In each period \(t=0,1,2,\ldots\), all active customers face the same posted price,
 \[
     p_t\in\{p^L,p^H\},
     \qquad 0<p^L<p^H,
 \]
 where \(p^L\) and \(p^H\) are the given promotional and regular prices. Let \(\Delta p=p^H-p^L\) denote the price gap.
+\textcolor{black}{These prices fix discount depth; promotion planning concerns frequency and arrangement.}
 
-A unit mass of customers arrives in each period. Customers arriving in the same period form a cohort, whose age \(a\) is the number of periods since arrival. Each customer can purchase one unit of the product in each active period and can therefore purchase repeatedly. We suppose that a cohort can remain active at ages \(a=0,\ldots,\mathcal A\), where the nonnegative integer \(\mathcal A\) denotes the maximum active age.
+A unit mass of customers arrives in each period. Customers arriving together form a cohort, whose age \(a\) is the number of periods since arrival. Each customer can purchase one unit in each active period. Cohorts can remain active at ages \(a=0,\ldots,\mathcal A\), where the nonnegative integer \(\mathcal A\) is the maximum active age. Models of customer dropout and evidence on relationship duration motivate a finite activity horizon \citep{schmittlein1987customers,fader2005customers,reinartz2000lifetime}.
 
-Cohort market share functions depend on the prices observed since arrival. An age \(a\) cohort has observed \(a\) past prices, all of which can affect current demand. The corresponding window including the current period has length \(a+1\). Thus, \(\mathcal A\) determines how long customers remain active, and customers remember their past price exposure throughout this active lifetime.
+Customers remember all prices observed since arrival. At age \(a\), they have observed \(a\) past prices; the window including the current period has length \(a+1\).
 
-We characterize demand through the expected proportion of each cohort that buys in the current period. Define
+Define
 \[
     d_t=\mathbf 1\{p_t=p^L\},
     \qquad
@@ -22,15 +22,21 @@ We characterize demand through the expected proportion of each cohort that buys 
 \]
 where \(d_t\) indicates a promotion at time \(t\) and \(y_{a,t}\) counts promotions in the cohort's remembered past periods. The number of past promotions is zero when \(a=0\).
 
-The first assumption we make is that the expected demand from a cohort of age \(a\) depends on the current price \(p\) and the number of promotions encountered in the remembered price histories.
 \begin{assumption}\label{ass:count-based}
-For each age \(a\), the expected demand at time \(t\) is \(M_a(p_t, y_{a,t})\), where the common \textit{market share function}
-\begin{align*}
-    M_a:&\{p^L,p^H\}\times\{0,\ldots,a\}\longrightarrow[0,1], \\
-    &(p_t,y_{a,t})\longmapsto M_a(p_t,y_{a,t}),
-\end{align*}
-gives the expected proportion of the cohort that will purchase.
+For each age \(a\), the expected proportion of the cohort purchasing at time \(t\) is \(M_a(p_t,y_{a,t})\), where the \textit{market share function}
+\[
+    M_a:\{p^L,p^H\}\times\{0,\ldots,a\}\longrightarrow[0,1]
+\]
+depends on the current price and the number of remembered promotions.
 \end{assumption}
+
+This assumption treats remembered past periods symmetrically while allowing nonlinear responses to repeated promotions. Under binary pricing, promotion count also determines the average remembered price: for \(a\ge1\),
+\[
+    r_{a,t}
+    =\frac{1}{a}\sum_{j=1}^{a}p_{t-j}
+    =p^H-\frac{\Delta p}{a}y_{a,t}.
+\]
+Thus, at a given customer age, the model accommodates average-price reference effects as well as positive engagement effects.
 
 Expected revenue in a period equals the posted price multiplied by total expected demand across active cohorts. Let
 \[
@@ -49,30 +55,14 @@ be the set of feasible price paths. Fix an initial price history \((p_{-\mathcal
 \]
 Starting with an empty population or a different initial price history changes only finitely many initial revenues and leaves the long run objective unchanged. Each price decision affects current revenue through the transaction price and current market share, and affects subsequent revenue through customers' remembered promotional exposure.
 
-\subsection{Motivation for the modeling assumptions}
-\label{sec:model-scope}
-
-We study a high-low pricing set up which is an established framework in the classical promotion literature \citep{raju1990promotions,lalrao1997}. Such policies can be optimal under conditions on price dispersion and the relative strength of current and historical price effects \citep{cohenhillel2023}. They are straightforward to implement through a price path specifying when to switch between two preset prices.
-
-We assume there is a maximum active age \(\mathcal A\) which keeps the active population bounded as new cohorts arrive. Models of customer dropout and evidence on relationship duration motivate finite customer activity \citep{schmittlein1987customers,fader2005customers,reinartz2000lifetime}. Observed customer stay lengths can inform this cutoff. Customers remember prices observed since arrival throughout their active lifetime, so cohorts of different ages have different history lengths. Finite price histories also appear in promotion planning models such as \citet{cohen2017promotion}.
-
-The market share function \(M_a(p,y)\) separates the current price from a summary of historical exposure, following reference price models such as \citet{greenleaf1995reference}, \citet{kopalle1996reference}, and \citet{popescu2007}. Average past prices and the cumulative number of promotions provide examples of scalar history summaries \citep{agrawal2024reference,neslin2009dynamics}.
-Assumption~\ref{ass:count-based} additionally treats remembered past periods symmetrically. Under binary pricing, the number of past promotions determines the average remembered price. For \(a\ge1\),
-\[
-    r_{a,t}
-    =\frac{1}{a}\sum_{j=1}^{a}p_{t-j}
-    =p^H-\frac{\Delta p}{a}y_{a,t}.
-\]
-For a given age, the historical average and the number of promotions therefore contain the same information. A market share function of the current price and a reference price that is the average of past prices can consequently be incorporated in our market share function \(M_a(p,y)\). Holding the current price fixed, demand may decrease with past promotions through the reference price channel or increase through engagement. We also do not restrict how the market share function depends on the number of past promotions, allowing for nonlinear effects and interactions among multiple past promotions.
-
-The affine extensions in Sections~\ref{sec:affine-location-dependent} and~\ref{sec:reference-engagement} allow historical effects to vary across lags. Historical coefficients can be positive under engagement and negative under reference price effects, while the current promotion retains a separate coefficient.
-
 \subsection{Cyclic formulation}
 \label{sec:cycle}
 
-In this section we show that an optimal pricing policy can be chosen periodic. This result reduces the seller's problem to selecting a finite cycle of prices while preserving the optimal value over all feasible infinite price paths. Finite memory and the stable age composition make current revenue a fixed function of the current price and a finite history of past prices. We use this property to represent the pricing problem on a finite graph.
+\begingroup\color{black}
+Finite memory and the stable age composition make period revenue a fixed function of recent prices. We represent these histories as states of a finite graph and show that a maximum mean cycle yields an optimal periodic policy.
 
-We define state \(s_t\), which records the price history needed to calculate current revenue and update customers' remembered exposure, that is,
+Although current demand depends on promotion count, updating that count requires knowing which price leaves the memory window. The state therefore records the recent price sequence:
+\par\endgroup
 \[
     s_t=(p_{t-\mathcal A},p_{t-\mathcal A+1},\ldots,p_t)
     \in\{p^L,p^H\}^{\mathcal A+1}.
@@ -86,8 +76,6 @@ with the empty sum equal to zero. The revenue associated with this state is
     w(s)=q_{\mathcal A}\sum_{a=0}^{\mathcal A}
     M_a\bigl(q_{\mathcal A},y_a(s)\bigr).
 \]
-Although current demand depends on the number of past promotions, the remembered price sequence determines how that number changes as prices leave the memory window.
-
 Feasible pricing decisions determine transitions between states. Let \(\mathcal G_{\mathcal A}\) be the directed graph whose nodes are the states defined above, with an edge
 \[
     (q_0,\ldots,q_{\mathcal A})
@@ -102,17 +90,17 @@ Each transition removes the oldest price and appends the next posted price. A fe
     The optimal long run average revenue equals the maximum mean cycle value in \(\mathcal G_{\mathcal A}\) with node weights \(w(s)\). In particular, there exists an optimal periodic promotion policy.
 \end{proposition}
 
-We can therefore formulate the remaining analysis in terms of finite price cycles. Write
+\textcolor{black}{The proof appears in Section~\ref{app:structural-proofs} of the supplementary appendix.} We can therefore formulate the remaining analysis in terms of finite price cycles. Write
 \[
     C=(p_1(C),\ldots,p_{\mathcal T}(C)),
     \qquad p_t(C)\in\{p^L,p^H\},
 \]
-where \(\mathcal T\geq1\) is the cycle length. Cycle indices may be any integer, including values below \(1\) or above \(\mathcal T\), and are interpreted modulo \(\mathcal T\). Specifically, we identify \(t\) with \(1+((t-1)\bmod \mathcal T)\) and use this convention throughout the paper without further mention. Define
+where \(\mathcal T\geq1\) is the cycle length. \textcolor{black}{All cycle indices are interpreted modulo \(\mathcal T\).} Define
 \[
     d_t(C)=\mathbf 1\{p_t(C)=p^L\},
     \qquad y_{a,t}(C)=\sum_{j=1}^{a}d_{t-j}(C).
 \]
-These quantities give the current promotion indicator and the number of past promotions in the periodic extension of \(C\). When \(a>\mathcal T\), a memory window spans multiple repetitions of the cycle, and each occurrence represents a distinct period of exposure. Total and average cycle revenues are
+These quantities give the current promotion indicator and the number of past promotions in the periodic extension of \(C\). \textcolor{black}{If a memory window spans multiple repetitions, each occurrence counts as a distinct period of exposure.} Total and average cycle revenues are
 \[
     R(C)=\sum_{t=1}^{\mathcal T}p_t(C)\sum_{a=0}^{\mathcal A}
     M_a\bigl(p_t(C),y_{a,t}(C)\bigr),
@@ -123,8 +111,10 @@ Let
     m=\sum_{t=1}^{\mathcal T}d_t(C),
     \qquad \rho=\frac{m}{\mathcal T}
 \]
-denote the number of promotions per cycle and their frequency. The seller's problem is to choose the cycle length, number of promotions, and positions of the promotional periods to maximize \(\bar R(C)\).
+\textcolor{black}{denote promotion count and promotion frequency, respectively. At fixed \((\mathcal T,m)\), arrangement specifies the positions of the promotional periods. The seller jointly chooses cycle length, frequency, and arrangement to maximize \(\bar R(C)\).}
 
 Cyclic rotations change only the starting point of a cycle and have the same average revenue. We therefore treat cycles that differ only by rotation as the same arrangement.
 
-The graph formulation provides a computational benchmark. A maximum mean cycle can be found in time polynomial in the numbers of nodes and edges using the cycle mean algorithm of \citet{karp1978}. However, since \(\mathcal G_{\mathcal A}\) contains \(2^{\mathcal A+1}\) states, this computation grows exponentially with memory depth.
+\begingroup\color{black}
+Periodic optimality reduces the infinite-horizon problem to cycle selection. Exact computation using maximum mean cycle algorithms \citep{karp1978} remains exponential in memory length because the graph contains \(2^{\mathcal A+1}\) states. Section~\ref{sec:general-decomposition} develops structural conditions that permit arrangement and frequency choices without searching this graph.
+\par\endgroup

@@ -5,7 +5,17 @@
 
 \subsubsection{Additive policy result}
 \begin{proof}[\normalfont\bfseries Proof of Corollary~\ref{cor:affine-policy}]
-The historical marginal effects are the same at both current prices, so \(r_{a,k}=\Delta p\,\Delta_{a,k}\). Substitution into Proposition~\ref{thm:exposure-decomposition} yields the displayed \(\psi_{b,k}\) in Section~\ref{sec:balanced}. Under Assumption~\ref{ass:additive-engagement}, decreasing marginal effects in exposure and age make both interior terms nonpositive, while nonnegative marginal effects give the terminal sign. Therefore every \(F_b\) is concave. Theorem~\ref{thm:general-sign-arrangement} gives balanced optimality. Proposition~\ref{thm:pwl} gives the frequency and short period conclusions, including optimality over all feasible infinite price paths.
+The historical marginal effects are the same at both current prices, so \(r_{a,k}=\Delta p\,\Delta_{a,k}\). {\color{black}Substitution into Proposition~\ref{thm:exposure-decomposition} yields
+\[
+ \psi_{b,k}=\begin{cases}
+ p^H(\Delta_{b+1,k+1}-\Delta_{b+1,k})
+ +\Delta p(\Delta_{b+1,k}-\Delta_{b,k}),
+     &1\le k\le b<\mathcal A,\\
+ -\Delta p\,\Delta_{\mathcal A,k},
+     &1\le k\le b=\mathcal A.
+ \end{cases}
+\]
+}\noindent Under Assumption~\ref{ass:additive-engagement}, decreasing marginal effects in exposure and age make both interior terms nonpositive, while nonnegative marginal effects give the terminal sign. Therefore every \(F_b\) is concave. Theorem~\ref{thm:general-sign-arrangement} gives balanced optimality. Proposition~\ref{thm:pwl} gives the frequency and short period conclusions, including optimality over all feasible infinite price paths.
 
 The additive frequency coefficients are
 \[
@@ -13,48 +23,65 @@ The additive frequency coefficients are
  g_1=\sum_{a=0}^{\mathcal A}(p^L\eta_a-\Delta p\,\alpha_a)
       +p^H\sum_{a=1}^{\mathcal A}a \Delta_{a,1}.
 \]
-The window contributions are \(F_b(n)=\sum_{k=1}^{b}(n-k)_+\psi_{b,k}\), and their linear interpolations give the frequency objective by Proposition~\ref{thm:ratio}.
+The window contribution functions are \(F_b(n)=\sum_{k=1}^{b}(n-k)_+\psi_{b,k}\), and their linear interpolations give the frequency objective by Proposition~\ref{thm:ratio}.
 \end{proof}
 
+\subsubsection{Age and exposure separability}
+\begin{example}[Age and exposure separability]\label{ex:separable-engagement}
+Let
+\[
+ f_a(y)=c_a h(y),\qquad c_0=0,\qquad
+ c_1\ge\cdots\ge c_{\mathcal A}\ge0,\qquad h(0)=0,
+\]
+where \(h\) is nondecreasing and discretely concave on \(\{0,\ldots,\mathcal A\}\). Then
+\[
+ \Delta_{a,k}=c_a\bigl(h(k)-h(k-1)\bigr)
+\]
+is nonnegative and weakly decreases in both \(k\) and \(a\). Assumption~\ref{ass:additive-engagement} holds whenever \(\alpha_a,\eta_a\ge0\) and \(\alpha_a+\eta_a+c_a h(a)\le1\).
+\end{example}
+
 \subsubsection{Affine specialization}
-For affine engagement, the balanced frequency objective simplifies to
-\begin{equation}\label{eq:g-rho}
- g^{\mathrm{aff}}(\rho)=g_0^{\mathrm{aff}}+g_1^{\mathrm{aff}}\rho
-  -\Delta p\sum_{b=1}^{\mathcal A}
-      (\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}})
-      q_b^{\mathrm{aff}}(\rho),
-\end{equation}
-where \(q_b^{\mathrm{aff}}(\rho)=q_{b,2}(\rho)\), \(\beta_{\mathcal A+1}^{\mathrm{aff}}=0\), and
+Write \(\alpha_a^{\mathrm{aff}}=\alpha_a\), \(\eta_a^{\mathrm{aff}}=\eta_a\), and \(f_a(y)=\beta_a^{\mathrm{aff}}y\), with \(\beta_{\mathcal A+1}^{\mathrm{aff}}=0\). The additive frequency coefficients specialize to
 \[
 \begin{aligned}
  g_0^{\mathrm{aff}}&=p^H\sum_{a=0}^{\mathcal A}\alpha_a^{\mathrm{aff}},\\
- g_1^{\mathrm{aff}}&=-\Delta p\sum_{a=0}^{\mathcal A}\alpha_a^{\mathrm{aff}}
-  +\sum_{a=0}^{\mathcal A}
-       (p^L\eta_a^{\mathrm{aff}}+p^Ha\beta_a^{\mathrm{aff}}).
+ g_1^{\mathrm{aff}}&=\sum_{a=0}^{\mathcal A}
+ \bigl(p^L\eta_a^{\mathrm{aff}}-\Delta p\,\alpha_a^{\mathrm{aff}}
+       +p^Ha\beta_a^{\mathrm{aff}}\bigr).
 \end{aligned}
 \]
-
-\begin{proof}[\normalfont\bfseries Affine revenue representation]
-For affine engagement, \(\Delta_{a,k}=\beta_a^{\mathrm{aff}}\). Proposition~\ref{thm:exposure-decomposition} gives
+Since \(\Delta_{a,k}=\beta_a^{\mathrm{aff}}\), Proposition~\ref{thm:exposure-decomposition} gives
 \[
- \psi_{b,k}=-\Delta p(\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}}),\qquad
- F_b(n)=-\Delta p(\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}})\binom n2,
+ \psi_{b,k}=-\Delta p(\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}}),
+ \qquad
+ F_b(n)=-\Delta p(\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}})\binom n2.
 \]
-with \(\beta_{\mathcal A+1}^{\mathrm{aff}}=0\). The frequency terms are
+\begingroup\color{blue}
+Define the promotion pair count
 \[
- K^{\mathrm{aff}}_{\mathcal T,m}
- =(\mathcal T p^H-\Delta p\,m)\sum_a\alpha_a^{\mathrm{aff}}
- +m\sum_a(p^L\eta_a^{\mathrm{aff}}+p^Ha\beta_a^{\mathrm{aff}})
- =\mathcal T g_0^{\mathrm{aff}}+mg_1^{\mathrm{aff}}.
+ Q_b(C)=\sum_{t=1}^{\mathcal T}\binom{N_{b,t}(C)}{2},
+ \qquad b=0,\ldots,\mathcal A.
 \]
-Hence the cycle revenue is
+Set \(Q_b=0\) for \(b<0\); also \(Q_0=0\). For balanced cycles, its average is
+\[
+ q_b(\rho)=\bigl(1-\xi_b(\rho)\bigr)\binom{n_b(\rho)}{2}
+           +\xi_b(\rho)\binom{n_b(\rho)+1}{2}
+           =\frac{Q_b(C^{\mathrm{bal}})}{\mathcal T},
+\]
+where \(n_b\) and \(\xi_b\) are defined in Section~\ref{sec:general-frequency}. The formula defines a continuous interpolation for all \(\rho\in[0,1]\).
+\par\endgroup
+Thus cycle revenue is
 \begin{equation}\label{eq:affine-revenue}
  R^{\mathrm{aff}}(C)=\mathcal T g_0^{\mathrm{aff}}+mg_1^{\mathrm{aff}}
  -\Delta p\sum_{b=1}^{\mathcal A}
- (\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}})Q_{b,2}(C).
+ (\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}})Q_b(C).
 \end{equation}
-For a balanced cycle, dividing by \(\mathcal T\) and applying Proposition~\ref{thm:ratio} gives \eqref{eq:g-rho}.
-\end{proof}
+For balanced cycles, dividing by \(\mathcal T\) and applying Proposition~\ref{thm:ratio} yields
+\begin{equation}\label{eq:g-rho}
+ g^{\mathrm{aff}}(\rho)=g_0^{\mathrm{aff}}+g_1^{\mathrm{aff}}\rho
+ -\Delta p\sum_{b=1}^{\mathcal A}
+ (\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}})q_b(\rho).
+\end{equation}
 
 Summing \(M_a^{\mathrm{aff}}=\alpha_a^{\mathrm{aff}}+\eta_a^{\mathrm{aff}}d_t+\beta_a^{\mathrm{aff}}y_{a,t}\) over the cycle and using \(\sum_t y_{a,t}=am\) gives
 \[
@@ -64,7 +91,7 @@ Summing \(M_a^{\mathrm{aff}}=\alpha_a^{\mathrm{aff}}+\eta_a^{\mathrm{aff}}d_t+\b
    +m\sum_{a=0}^{\mathcal A}
        \bigl(\eta_a^{\mathrm{aff}}+a\beta_a^{\mathrm{aff}}\bigr).
 \]
-Thus rearranging promotions at fixed \((\mathcal T,m)\) preserves total expected demand. Increasing current promotion effects by \(u_a\) adds \(p^Lm\sum_a u_a\) to cycle revenue without affecting any window contribution. This latter conclusion also holds for nonlinear additive engagement.
+Thus rearranging promotions at fixed \((\mathcal T,m)\) preserves total expected demand. Increasing current promotion effects by \(u_a\) adds \(p^Lm\sum_a u_a\) to cycle revenue \textcolor{black}{without changing any \(F_b\)}. This latter conclusion also holds for nonlinear additive engagement.
 
 For heterogeneous affine customers, the preceding representation uses the weighted historical slope \(\beta_b^{\mathrm{het}}=\sum_{\{i:\mathcal A_i\ge b\}}\lambda_i\beta_{i,b}^{\mathrm{aff}}\), with \(\beta_{\mathcal A_{\max}+1}^{\mathrm{het}}=0\). A nonincreasing, nonnegative aggregate slope sequence therefore gives the same concavity and computation results, by Proposition~\ref{prop:general-heterogeneous-horizons}.
 
@@ -77,14 +104,14 @@ For affine engagement satisfying Assumption~\ref{ass:additive-engagement}, \(g_0
 \begin{proof}[\normalfont\bfseries Proof of Corollary~\ref{thm:affine-complexity}]
 A single pass over ages reads the slopes and computes \(g_0^{\mathrm{aff}}\) and \(g_1^{\mathrm{aff}}\) using \(O(\mathcal A+1)\) operations including initialization. If \(\mathcal A=0\), the objective is affine and comparing its endpoints completes the search. Assume henceforth that \(\mathcal A\ge1\).
 
-    At each interior breakpoint \(j/(b+1)\), \(j=1,\ldots,b\), the slope of \(q_b^{\mathrm{aff}}\) increases by \(b+1\). Define the corresponding slope decrement of \(g^{\mathrm{aff}}\) by
+    At each interior breakpoint \(j/(b+1)\), \(j=1,\ldots,b\), the slope of \(\textcolor{black}{q_b}\) increases by \(b+1\). Define the corresponding slope decrement of \(g^{\mathrm{aff}}\) by
     \[
         \zeta_b:=\Delta p\,(b+1)
         \bigl(\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}}\bigr).
     \]
     Form the \(O(\mathcal A^2)\) events \((j/(b+1),\zeta_b)\), sort them by frequency, and add decrements at coincident frequencies. Initialize the objective value and the best value at \(g_0^{\mathrm{aff}}\), attained at \(\rho=0\), and the slope at \(g_1^{\mathrm{aff}}\). Between successive event frequencies, advance the value by the current slope times the frequency increment, record the best value, and then subtract the combined decrement. Finally advance to \(\rho=1\) and compare its value with the current best. Each event is processed once, so sorting dominates the \(O(\mathcal A^2\log(\mathcal A+1))\) operation count and the event list uses \(O(\mathcal A^2)\) space.
 
-    To avoid sorting, observe that an interior frequency \(u/q\) in lowest terms is an event for depth \(b\) exactly when \(q\) divides \(b+1\). Its total slope decrement therefore depends only on the reduced denominator. Precompute
+    To avoid sorting, observe that an interior frequency \(u/q\) in lowest terms is an event \textcolor{black}{for index \(b\)} exactly when \(q\) divides \(b+1\). Its total slope decrement therefore depends only on the reduced denominator. Precompute
     \[
         \delta_q:=\sum_{k=1}^{\lfloor(\mathcal A+1)/q\rfloor}\zeta_{kq-1},
         \qquad q=2,\ldots,\mathcal A+1.
@@ -97,29 +124,17 @@ A single pass over ages reads the slopes and computes \(g_0^{\mathrm{aff}}\) and
     This recurrence takes a constant number of operations per fraction. At each interior fraction with denominator \(q\), apply the same sweep update using \(\delta_q\). There are \(O(\mathcal A^2)\) fractions, so preprocessing the decrements and sweeping them takes \(O(\mathcal A^2)\) operations. Constructing the maximizing balanced cycle takes \(O(\mathcal A+1)\) further operations by Lemma~\ref{lem:balanced-exists}.
 \end{proof}
 
-\begin{samepage}
-\begin{example}[Finding an optimal affine arrangement]\label{ex:affine-algorithm}
-Let \(\mathcal A=4\), \(p^{L}=1\), and \(p^{H}=1.5\). Set \(\alpha_a^{\mathrm{aff}}=0.12\) for every age and \((\beta_0^{\mathrm{aff}},\ldots,\beta_4^{\mathrm{aff}})=(0,0.1,0.04,0,0)\), initially with \(\eta_a^{\mathrm{aff}}=\beta_a^{\mathrm{aff}}\). Then \(\sum_a\alpha_a^{\mathrm{aff}}=0.6\). These values give \(g_0^{\mathrm{aff}}=0.9\), \(g_1^{\mathrm{aff}}=0.11\), and nonzero window contributions only at depths one and two, so it suffices to evaluate candidate frequencies \(\{0,1/3,1/2,2/3,1\}\). Thus
-    \[
-        g^{\mathrm{aff}}(\rho)=0.9+0.11\rho-0.5\bigl[0.06q_1^{\mathrm{aff}}(\rho)+0.04q_2^{\mathrm{aff}}(\rho)\bigr].
-    \]
-    The slope is positive before \(\rho=1/2\) and negative after it, so the shortest optimal balanced cycle has \((\mathcal T^\star,m^\star)=(2,1)\). The optimal arrangement alternates promotional and regular prices.
-
-    Now increase only \(\eta_0^{\mathrm{aff}}\) from zero to \(0.04\). The historical coefficients and all window contributions are unchanged, while \(g_1^{\mathrm{aff}}\) rises to \(0.15\). The maximizing frequency becomes \(2/3\), implemented by the balanced cycle \(HLL\), with average revenue \(0.97\). This comparison isolates the effect of the current promotion on frequency while retaining the same arrangement rule.
-\end{example}
-\end{samepage}
-
 \subsubsection{Heterogeneous lag effects}
 \label{app:affine-recency}
 
 \begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{thm:pd-balanced}]
-Write \(Q_b=Q_{b,2}\). Aggregate the historical coefficients across active cohorts as
+Aggregate the historical coefficients across active cohorts as
     \[
         \bar\beta_j^{\mathrm{loc}}
         =\sum_{\{a:a\ge j\}}\beta_{a,j}^{\mathrm{loc}},
         \qquad j=1,\ldots,\mathcal A.
     \]
-    Define the lag counts
+    Define the promotion pair counts at lag \(j\),
     \[
         P_j(C)=\sum_{t=1}^{\mathcal T}d_t d_{t-j}.
     \]
@@ -127,7 +142,7 @@ Write \(Q_b=Q_{b,2}\). Aggregate the historical coefficients across active cohor
     \[
         -\Delta p\sum_{j=1}^{\mathcal A}\bar\beta_j^{\mathrm{loc}}P_j(C).
     \]
-    The promotion combination counts satisfy
+    \textcolor{black}{The counts \(Q_b\) satisfy}
     \[
         Q_b(C)-Q_{b-1}(C)=\sum_{j=1}^{b}P_j(C),
         \qquad
@@ -147,45 +162,104 @@ Write \(Q_b=Q_{b,2}\). Aggregate the historical coefficients across active cohor
  +\bar\beta_{b+2}^{\mathrm{loc}}\right)\binom n2.
 \]
 The identities above follow by counting pairs of positions in a window using
-\(Q_b=\sum_{j=1}^b(b+1-j)P_j\). They remain valid with cyclic multiplicities when the window exceeds the cycle length. Under \eqref{eq:loc-beta-convex}, every \(F_b\) is concave, so the window comparison in Theorem~\ref{thm:general-sign-arrangement} proves balanced optimality. For \(\mathcal A=0\), the arrangement sum is empty.
+\(Q_b=\sum_{j=1}^b(b+1-j)P_j\). They remain valid with cyclic multiplicities when the window exceeds the cycle length. Under \eqref{eq:loc-beta-convex}, every \(F_b\) is concave, so the window comparison in Theorem~\ref{thm:general-sign-arrangement} proves balanced optimality.
+{\color{black}
+The remaining revenue terms are \(\mathcal T g_0+mg_1\), where
+\[
+ g_0=p^H\sum_{a=0}^{\mathcal A}\alpha_a^{\mathrm{loc}},
+ \qquad
+ g_1=\sum_{a=0}^{\mathcal A}
+ (p^L\beta_{a,0}^{\mathrm{loc}}-\Delta p\,\alpha_a^{\mathrm{loc}})
+ +p^H\sum_{j=1}^{\mathcal A}\bar\beta_j^{\mathrm{loc}}.
+\]
+Thus the frequency and cap arguments of Propositions~\ref{thm:ratio}--\ref{thm:pwl} and Corollary~\ref{cor:balanced-frequency-cap} apply with these coefficients and \(F_b\). The finite-state argument of Proposition~\ref{thm:cycle} also applies because demand depends only on the current price and the previous \(\mathcal A\) prices, giving optimality over infinite price paths.
+\par}
+For \(\mathcal A=0\), the arrangement sum is empty.
 \end{proof}
-For the finite geometric profile \(\bar\beta_b^{\mathrm{loc}}=cr^b\), the second difference is \(cr^b(1-r)^2\) for \(b\le\mathcal A-2\), \(cr^{\mathcal A-1}(1-2r)\) for \(b=\mathcal A-1\), and \(cr^{\mathcal A}\) for \(b=\mathcal A\). Thus the cutoff condition is \(r\le1/2\) when \(\mathcal A\ge2\). With \(\mathcal A=1\), the sole second difference is positive.
+\begingroup\color{black}
+This condition recovers the affine case of Assumption~\ref{ass:additive-engagement} when historical coefficients do not depend on lag. If \(\beta_{a,j}^{\mathrm{loc}}=\beta_a^{\mathrm{aff}}\) for \(j\ge1\), then \(\bar\beta_j^{\mathrm{loc}}=\sum_{a=j}^{\mathcal A}\beta_a^{\mathrm{aff}}\), and
+\[
+ \bar\beta_b^{\mathrm{loc}}-2\bar\beta_{b+1}^{\mathrm{loc}}
+ +\bar\beta_{b+2}^{\mathrm{loc}}
+ =\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}}.
+\]
+Thus declining historical slopes are the count model counterpart of the aggregate lag convexity condition.
 
+\par\endgroup
+\begingroup\color{black}
+Monotone recency alone need not yield balanced optimality. Set \(\mathcal A=3\), \(\mathcal T=4\), \(m=2\), \(p^L=1\), and \(p^H=2\). Let \(\alpha_a^{\mathrm{loc}}=0.10\), \(\beta_{a,0}^{\mathrm{loc}}=0.05\), and \(\beta_{a,j}^{\mathrm{loc}}=\beta_j\) for \(j\le a\), with \((\beta_1,\beta_2,\beta_3)=(0.10,0.09,0.01)\). All histories give market shares in \([0,1]\), and historical effects decrease with lag. The aggregate profile is \((0.30,0.18,0.01)\), whose first second difference is \(-0.05\). The single block arrangement \((0,0,1,1)\) earns average revenue \(1.1125\), exceeding the balanced arrangement \((0,1,0,1)\), which earns \(1.10\).
+\par\endgroup
+
+{\color{black}
+For per-cohort geometric decay, \(\bar\beta_j^{\mathrm{loc}}=c(\mathcal A-j+1)r^j\) for \(j\le\mathcal A\), with zero extension thereafter. Its second difference is
+\[
+ \bar\beta_b^{\mathrm{loc}}-2\bar\beta_{b+1}^{\mathrm{loc}}
+ +\bar\beta_{b+2}^{\mathrm{loc}}
+ =
+ \begin{cases}
+ cr^b\bigl[(\mathcal A-b)(1-r)^2+1-r^2\bigr],
+       &1\le b<\mathcal A,\\
+ cr^{\mathcal A},&b=\mathcal A,
+ \end{cases}
+\]
+which is positive for every \(0<r<1\).
+
+More generally, let \(\beta_{a,j}^{\mathrm{loc}}=\beta_j\), where \((\beta_j)_{j=1}^{\mathcal A}\) is nonnegative, nonincreasing, and discretely convex. Then \(\bar\beta_j^{\mathrm{loc}}=(\mathcal A-j+1)\beta_j\). For \(1\le b\le\mathcal A-2\),
+\[
+ \bar\beta_b^{\mathrm{loc}}-2\bar\beta_{b+1}^{\mathrm{loc}}
+ +\bar\beta_{b+2}^{\mathrm{loc}}
+ =(\mathcal A-b-1)(\beta_b-2\beta_{b+1}+\beta_{b+2})
+ +2(\beta_b-\beta_{b+1})\ge0.
+\]
+At \(b=\mathcal A-1\), when \(\mathcal A\ge2\), the second difference is \(2(\beta_{\mathcal A-1}-\beta_{\mathcal A})\ge0\); at \(b=\mathcal A\), it is \(\beta_{\mathcal A}\ge0\). Thus condition~\eqref{eq:loc-beta-convex} holds, including at the finite lifetime cutoff.
+\par}
 \subsection{Reference price channel}
 \label{app:reference-engagement}
 
-\subsubsection{Average reference prices}
+\begingroup\color{black}
 \begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{prop:reference-constant-price}]
-If \(\mathcal A=0\), demand depends only on the current price, so the better constant price is optimal. Suppose \(\mathcal A\ge1\). Under \(w_{a,j}=1/a\), the reference price is \(p^H-\Delta p\,y/a\), and the market share function becomes
+If \(\mathcal A=0\), demand depends only on the current price, so the better constant price is optimal. Suppose \(\mathcal A\ge1\). The additive decomposition in the proof of Corollary~\ref{cor:affine-policy} gives
 \[
- M_a(p,y)=u_a-v_ap+\gamma_a\left(p^H-\frac{\Delta p}{a}y-p\right),
- \qquad a\ge1.
-\]
-It therefore has the additive form \eqref{eq:additive-market-share} with a linear historical response and coefficients
-\[
- \alpha_a^{\mathrm{aff}}=u_a-v_ap^H,\qquad
- \eta_a^{\mathrm{aff}}=(v_a+\gamma_a)\Delta p,\qquad
- \beta_a^{\mathrm{aff}}=-\frac{\gamma_a\Delta p}{a}.
-\]
-At age zero, take \(\alpha_0^{\mathrm{aff}}=u_0-v_0p^H\), \(\eta_0^{\mathrm{aff}}=v_0\Delta p\), and \(\beta_0^{\mathrm{aff}}=0\). The assumed market share bounds ensure feasibility even though historical slopes are nonpositive.
-
-For every age \(a\ge1\), the marginal effects at both current prices are \(\Delta_{a,k}^H=\Delta_{a,k}^L=\beta_a^{\mathrm{aff}}\). Hence \(r_{a,k}=\Delta p\,\beta_a^{\mathrm{aff}}\), and Proposition~\ref{thm:exposure-decomposition} gives
-\[
- \psi_{b,k}
- =\begin{cases}
- \displaystyle (\Delta p)^2\left(\frac{\gamma_b}{b}-\frac{\gamma_{b+1}}{b+1}\right),
-     &1\le k\le b<\mathcal A,\\[6pt]
- \displaystyle (\Delta p)^2\frac{\gamma_{\mathcal A}}{\mathcal A},
+ \psi_{b,k}=\begin{cases}
+ p^H(\Delta_{b+1,k+1}-\Delta_{b+1,k})
+ +\Delta p(\Delta_{b+1,k}-\Delta_{b,k}),
+     &1\le k\le b<\mathcal A,\\
+ -\Delta p\,\Delta_{\mathcal A,k},
      &1\le k\le b=\mathcal A.
  \end{cases}
 \]
-Both expressions are nonnegative because \(\gamma_a/a\) is weakly decreasing and \(\gamma_a\ge0\). Equivalently, setting \(\beta_{\mathcal A+1}^{\mathrm{aff}}=0\) yields
-\[
- F_b(n)=-\Delta p\bigl(\beta_b^{\mathrm{aff}}-\beta_{b+1}^{\mathrm{aff}}\bigr)\binom n2,
- \qquad n=0,\ldots,b+1,
-\]
-whose second differences are nonnegative. Thus every \(F_b\) is discretely convex. Theorem~\ref{thm:general-sign-arrangement}(ii) gives single block optimality at each fixed \((\mathcal T,m)\), and Proposition~\ref{prop:general-cluster-frequency} gives optimality of the better constant price over all feasible infinite price paths.
+Under Assumption~\ref{ass:additive-reference}, both interior terms and the terminal term are nonnegative. Thus every \(F_b\) is discretely convex. Theorem~\ref{thm:general-sign-arrangement}(ii) gives single block optimality at fixed \((\mathcal T,m)\), and Proposition~\ref{prop:general-cluster-frequency} gives optimality of the better constant price over all feasible infinite price paths.
 \end{proof}
+
+\subsubsection{Nonlinear reference-price levels}
+For \(a\ge1\), let the reference price equal the average past price and consider
+\[
+ r_{a,t}=p^H-\frac{\Delta p}{a}y_{a,t},\qquad
+ M_a(p,r)=B_a(p)-\gamma_a(p^H-r)^\nu,
+ \qquad 0<\nu\le1,\quad\gamma_a\ge0.
+\]
+Here \(B_a(p)\) is market share when the reference price equals \(p^H\). Set
+\[
+ \alpha_a=B_a(p^H),\qquad
+ \eta_a=B_a(p^L)-B_a(p^H),\qquad
+ f_a(y)=-\gamma_a\left(\frac{\Delta p}{a}\right)^\nu y^\nu.
+\]
+Since \(y^\nu\) is nondecreasing and discretely concave, Assumption~\ref{ass:additive-reference} holds if \(\gamma_a/a^\nu\) weakly decreases with age and
+\[
+ 0\le B_a(p^H)-\gamma_a(\Delta p)^\nu,\qquad
+ B_a(p^H)\le B_a(p^L)\le1.
+\]
+At age zero, omit the reference term and impose \(0\le B_0(p^H)\le B_0(p^L)\le1\). A common sensitivity \(\gamma_a=\gamma\) satisfies the age condition for every \(0<\nu\le1\). This specification models a nonlinear response to the reference-price level, shared across current prices; it does not impose a general nonlinear response to gains and losses relative to the current price.
+
+\subsubsection{Average reference prices in the linear benchmark}
+Under \(w_{a,j}=1/a\), model~\eqref{eq:reference-market-share} has the additive form with
+\[
+ \alpha_a=u_a-v_ap^H,\qquad
+ \eta_a=(v_a+\gamma_a)\Delta p,\qquad
+ f_a(y)=-\frac{\gamma_a\Delta p}{a}y,\qquad a\ge1.
+\]
+At age zero, take \(\alpha_0=u_0-v_0p^H\), \(\eta_0=v_0\Delta p\), and \(f_0(0)=0\). Nonnegative \(v_a,\gamma_a\), feasible market shares, and weakly decreasing \(\gamma_a/a\) imply Assumption~\ref{ass:additive-reference}. Proposition~\ref{prop:reference-constant-price} therefore applies. This model is also the case \(\nu=1\) above, with \(B_a(p)=u_a-v_ap+\gamma_a(p^H-p)\).
+\par\endgroup
 
 \subsubsection{Exponentially smoothed reference prices}
 \hypertarget{proof-exponential-reference}{}
@@ -220,7 +294,7 @@ At age zero, take \(\alpha_0^{\mathrm{loc}}=u_0-v_0p^H\) and \(\beta_{0,0}^{\mat
    (\mathcal A-j+1)\lambda^{j-1},
  \qquad j=1,\ldots,\mathcal A.
 \]
-Set \(\bar\beta_{\mathcal A+1}^{\mathrm{loc}}=\bar\beta_{\mathcal A+2}^{\mathrm{loc}}=0\). The lag-count identities in Section~\ref{sec:affine-location-dependent} are algebraic and remain valid for these negative historical coefficients. They give the arrangement-dependent window contributions
+Set \(\bar\beta_{\mathcal A+1}^{\mathrm{loc}}=\bar\beta_{\mathcal A+2}^{\mathrm{loc}}=0\). \textcolor{black}{The lag-count identities in Section~\ref{app:affine-recency}} are algebraic and remain valid for these negative historical coefficients. They give the arrangement-dependent window contribution functions
 \[
  F_b(n)=-\Delta p\left(
  \bar\beta_b^{\mathrm{loc}}-2\bar\beta_{b+1}^{\mathrm{loc}}
@@ -240,29 +314,33 @@ Their second differences are independent of the promotion count and equal
     &b=\mathcal A.
  \end{cases}
 \]
-Both expressions are nonnegative, including at the finite lifetime cutoff. Thus every \(F_b\) is discretely convex. The convex-window comparison in Theorem~\ref{thm:general-sign-arrangement}, applied to this lag-dependent representation, establishes single block optimality at each fixed \((\mathcal T,m)\).
+Both expressions are nonnegative, including at the finite lifetime cutoff. Thus every \(F_b\) is discretely convex. The comparison for convex functions in Theorem~\ref{thm:general-sign-arrangement}, applied to this lag-dependent representation, establishes single block optimality at each fixed \((\mathcal T,m)\).
 
 For unrestricted frequency, apply the endpoint chord bound to each \(F_b\), as in Proposition~\ref{prop:general-cluster-frequency}. The remaining terms in average cycle revenue are affine in frequency, so every cycle \(C\) with frequency \(\rho\) satisfies
 \[
  \bar R(C)\le(1-\rho)\bar R(C^H)+\rho\bar R(C^L)
  \le\max\{\bar R(C^H),\bar R(C^L)\},
 \]
-where \(C^H=(p^H)\) and \(C^L=(p^L)\) are the two constant price cycles. Each cohort starts from the fixed reference \(\bar r\) and remains active only through age \(\mathcal A\), so current rewards depend on at most the current and previous \(\mathcal A\) prices. The finite graph argument of Proposition~\ref{thm:cycle} therefore extends this bound to all feasible infinite price paths. The initial reference can affect which constant price is better through the baseline demand terms, but does not affect window convexity. When \(\mathcal A=0\), history is absent and the better constant price is optimal directly.
+where \(C^H=(p^H)\) and \(C^L=(p^L)\) are the two constant price cycles. Each cohort starts from the fixed reference \(\bar r\) and remains active only through age \(\mathcal A\), so current rewards depend on at most the current and previous \(\mathcal A\) prices. The finite graph argument of Proposition~\ref{thm:cycle} therefore extends this bound to all feasible infinite price paths. The initial reference can affect which constant price is better through the baseline demand terms, but does not affect \textcolor{black}{convexity of \(F_b\)}. When \(\mathcal A=0\), history is absent and the better constant price is optimal directly.
 \end{proof}
 
 \subsubsection{General reference weights}
-Constant price optimality also holds for any nonnegative reference weights satisfying \(\sum_{j=1}^a w_{a,j}=1\), without the age monotonicity condition used for the fixed-frequency arrangement result. Cyclic reindexing gives
+\begingroup\color{blue}
+For the linear, loss neutral model in \eqref{eq:reference-market-share}, let
+\[
+ r_{a,t}=\sum_{j=1}^a w_{a,j}p_{t-j},
+ \qquad w_{a,j}\ge0,\qquad \sum_{j=1}^a w_{a,j}=1,\qquad a\ge1.
+\]
+Constant-price optimality holds without the age monotonicity condition used for the arrangement result at fixed \((\mathcal T,m)\). Cyclic reindexing gives
 \[
  \sum_{t=1}^{\mathcal T}p_t(p_{t-j}-p_t)
  =-\frac12\sum_{t=1}^{\mathcal T}(p_t-p_{t-j})^2.
 \]
-Consequently, for the linear, loss neutral model in \eqref{eq:reference-market-share},
+Substitution into cycle revenue yields
 \begin{equation}\label{eq:reference-variation-penalty}
-\begin{aligned}
- \bar R(C)={}&\frac1{\mathcal T}\sum_{t=1}^{\mathcal T}
- \sum_{a=0}^{\mathcal A}p_t(u_a-v_ap_t)\\
- &-\frac1{2\mathcal T}\sum_{a=1}^{\mathcal A}\gamma_a
+ \bar R(C)=g_0+\rho D
+ -\frac1{2\mathcal T}\sum_{a=1}^{\mathcal A}\gamma_a
  \sum_{j=1}^a w_{a,j}\sum_{t=1}^{\mathcal T}(p_t-p_{t-j})^2.
-\end{aligned}
 \end{equation}
-The first term is the frequency-weighted average of the two constant price revenues, and the subtracted term is nonnegative. The better constant price is therefore optimal over cycles and, by Proposition~\ref{thm:cycle}, over all feasible infinite price paths. This argument establishes constant price optimality for general weights. It does not assert convexity of every window contribution.
+Here \(\mathcal T^{-1}\sum_{t=1}^{\mathcal T}\sum_{a=0}^{\mathcal A}p_t(u_a-v_ap_t)=g_0+\rho D\), the frequency-weighted average of the two constant-price revenues. The subtracted term is nonnegative, so the better constant price is optimal over cycles and, by Proposition~\ref{thm:cycle}, over all feasible infinite price paths.
+\par\endgroup

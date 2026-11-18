@@ -1,8 +1,32 @@
 \section{Proofs and supplementary results for Section~\ref{sec:beyond-linear}}
 \label{app:mult-proofs}
-\subsection{Multiplicative window contributions and arrangement regimes}
+\subsection{Multiplicative window contribution functions and arrangement regimes}
 \label{app:mult-regimes}
 \hypertarget{proof-multiplicative-windows}{}
+
+\begin{corollary}[\textcolor{black}{Formula for \(F_b\)}]
+    \label{prop:mult-gamma}
+For \(b=1,\ldots,\mathcal A\), define
+\[
+ S_b^{\mathrm{mul}}(\kappa)=
+ \begin{cases}
+ s_1(1-s_2)-\kappa s_2(1-s_1),&1\le b<\mathcal A,\\
+ s_1-\kappa s_2,&b=\mathcal A.
+ \end{cases}
+\]
+\textcolor{black}{Then}
+\[
+ F_b(n)=p^Ls_2^bS_b^{\mathrm{mul}}(\kappa)
+ \frac{\theta^n-1-n(\theta-1)}{\theta-1},
+ \qquad n=0,\ldots,b+1,
+\]
+and their second differences satisfy
+\[
+ \psi_{b,k}=F_b(k+1)-2F_b(k)+F_b(k-1)
+ =p^Ls_2^b(\theta-1)\theta^{k-1}S_b^{\mathrm{mul}}(\kappa),
+ \qquad k=1,\ldots,b.
+\]
+\end{corollary}
 
 \begin{proof}[\normalfont\bfseries Proof of Corollary~\ref{prop:mult-gamma}]
 Since \(M_a^H(y)=s_2^{a+1}\theta^y\) and \(M_a^L(y)=\theta M_a^H(y)\), their successive differences are
@@ -25,7 +49,7 @@ For \(1\le k\le b<\mathcal A\), Proposition~\ref{thm:exposure-decomposition} giv
  &=p^Ls_2^b(\theta-1)\theta^{k-1}S_b^{\mathrm{mul}}(\kappa).
 \end{aligned}
 \]
-At the terminal depth, the same proposition yields
+\textcolor{black}{For \(b=\mathcal A\), the same proposition yields}
 \[
  \psi_{\mathcal A,k}=-r_{\mathcal A,k}
  =p^Ls_2^{\mathcal A+1}(\theta-1)\theta^{k-1}(\theta-\kappa)
@@ -41,11 +65,11 @@ Substitution gives the stated formula for \(F_b\), including \(F_b(0)=F_b(1)=0\)
 \end{proof}
 
 \begin{proof}[\normalfont\bfseries Proof of Proposition~\ref{thm:mult-regimes}]
-By Corollary~\ref{prop:mult-gamma}, the sign of every \(\psi_{b,k}\) at depth \(b\) equals the sign of \(S_b^{\mathrm{mul}}(\kappa)\). At the terminal depth,
+By Corollary~\ref{prop:mult-gamma}, the sign of every \(\psi_{b,k}\) \textcolor{black}{for each \(b\)} equals the sign of \(S_b^{\mathrm{mul}}(\kappa)\). \textcolor{black}{For \(b=\mathcal A\),}
 \[
  S_{\mathcal A}^{\mathrm{mul}}(\kappa)=s_2(\theta-\kappa).
 \]
-For every interior depth,
+\textcolor{black}{For \(1\le b<\mathcal A\),}
 \[
  S_b^{\mathrm{mul}}(\kappa)
  =s_2[\theta(1-s_2)-\kappa(1-s_1)],
@@ -64,14 +88,8 @@ The remaining region has \(\mathcal A\ge2\) and \(\theta<\kappa<\tau^{\mathrm{mu
 \end{proof}
 
 \paragraph{Scope of the structural conditions.}
-The short-period conclusion requires concave window contributions. For the multiplicative model, let \(\mathcal A=2\), \(p^L=1\), \(p^H=5\), \(s_1=3/5\), and \(s_2=1/5\). Direct enumeration of all cycles of period at most three gives maximum revenue \(473/375\), whereas
+The short-period guarantee in Proposition~\ref{thm:pwl} relies on concavity of every \(F_b\). For the multiplicative model, let \(\mathcal A=2\), \(p^L=1\), \(p^H=5\), \(s_1=3/5\), and \(s_2=1/5\). Direct enumeration of all cycles of period at most three gives maximum revenue \(473/375\), whereas
 \[
  \bar R(LLHH)=\frac{158}{125}>\frac{473}{375}.
 \]
 Thus an optimal period need not be at most \(\mathcal A+1\) outside the concave regime. This example also rules out domination by mixtures of shorter cycle revenues.
-
-Single block optimality at fixed frequency likewise needs a shape condition. With \(\mathcal A=1\), \(p^L=1\), \(p^H=2\), \(s_1=3/10\), and \(s_2=1/5\),
-\[
- \bar R(LHLH)=\frac{11}{25}>\frac7{16}=\bar R(LLHH).
-\]
-These parameters give a concave window contribution, so the comparison agrees with balanced optimality.

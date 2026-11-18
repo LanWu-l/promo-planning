@@ -1,9 +1,15 @@
 /build/
+/.texbuild/
 .DS_Store
 *.aux
 *.log
 *.out
 *.fls
 *.fdb_latexmk
-*.synctex.gz
+*.synctex*.gz
+*.ttt
+*.fff
 *.xdv
+main.pdf
+Research Paper-Optimal Promotion Planning.pdf
+.texbuild/main.pdf

@@ -1,23 +1,30 @@
-% !TeX program = xelatex
-\documentclass[11pt]{article}
-\input{preamble}
-\input{layout}
+% !TeX program = pdflatex
+\documentclass[opre,blindrev]{informs3}
+\OneAndAHalfSpacedXI
+\input{or-preamble}
 \input{metadata}
 
-\title{\PaperTitle}
-\author{\PaperAuthors}
-\date{\PaperDate}
-\hypersetup{pdftitle={\PaperTitle},pdfauthor={\PaperAuthorNames}}
+\TITLE{\PaperTitle}
+\RUNTITLE{Optimal Promotion Planning under Customer Memory}
+\RUNAUTHOR{Authors}
+\ARTICLEAUTHORS{\AUTHOR{}}
+\MANUSCRIPTNO{}
+\ABSTRACT{\input{abstract}}
+\KEYWORDS{\input{keywords}}
+% Area of review and subject classifications are to be selected by the authors.
+\ECTYPE{Electronic Companion to }
+\ECRUNAUTHOR{}
+\ECAUpunct{}
+\ECRUNTITLE{Optimal Promotion Planning under Customer Memory}
+\hypersetup{pdftitle={\PaperTitle},pdfauthor={}}
 
 \begin{document}
 \maketitle
-\begin{abstract}
-\input{abstract}
-\end{abstract}
-\noindent\textbf{Keywords}\quad\input{keywords}
-
 \input{body}
+\clearpage
+\label{or:references-start}
 \input{references}
+\processdelayedfloats
 \input{appendix-layout}
 \input{appendices}
 \end{document}

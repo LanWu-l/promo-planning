@@ -1,2 +1,2 @@
-$pdf_mode = 5;
+$pdf_mode = 1;
 $out_dir = "build";

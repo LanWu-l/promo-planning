@@ -3,8 +3,87 @@
 \section{Supplementary numerical results for Section~\ref{sec:usecase}}
 \label{app:numerical-study}
 
+\begingroup\color{black}
+\subsection{Holdout validation of the access-service example}
+\label{app:subscription-validation}
+
+\begingroup\color{black}
+For the monthly access service in Section~\ref{sec:estimated-cycle}, use
+\[
+ \alpha=(0.08,0.15,0.20,0.23,0.25),\qquad
+ \beta=(0,0.0675,0.054,0.042,0.030).
+\]
+Current and remembered promotions have the same age-specific effect. Allowing \(\beta_0>0\) would change \(g_1\) and could change the optimal frequency, while leaving \(F_b\) and arrangement rankings at prescribed \((\mathcal T,m)\) unchanged.
+
+\begingroup\color{blue}
+Under true demand, average monthly revenue is \(9.6438\) for \(HL\), compared with \(9.0909\) under constant regular pricing and \(9.1348\) under constant promotional pricing. These values aggregate five active ages with unit mass arrivals.
+\par\endgroup
+
+We simulate 400 independent groups over 24 measured months, with 60 users at each active age per group and month. Each group has a promotion probability drawn uniformly from \([0.2,0.8]\). Prices are assigned independently across months conditional on that probability, with four initial prices supplying the first measured histories. Conditional purchases are binomial with 60 trials and the specified market share. Using 300 groups, we estimate the age-specific intercepts and slopes by weighted least squares on observed cohort purchase proportions, with weights equal to cohort size and full-history memory fixed at four.
+
+We repeat this design with NumPy random seeds \(0,\ldots,19\), holding out 100 groups in each replication. Separately, 500 bootstrap replications resample the 300 estimation groups and select \(HL\) in \(99.2\%\) of replications.
+\par\endgroup
+ Purchase-proportion error compares predicted probabilities with observed cohort purchase proportions. The true-model benchmark uses the generating probabilities on the same holdout observations, so its error reflects binomial sampling variation. Revenue prediction error is \(100(\text{predicted}-\text{observed})/\text{observed}\), using average revenue over holdout group-months.
+
+\begin{table}[ht]
+\centering\small\color{black}
+\caption{Holdout validation across 20 independent replications. Revenue errors are percentages.}
+\label{tab:subscription-holdout}
+\begin{tabular}{lr}
+\toprule
+Measure&Value\\
+\midrule
+Mean purchase-proportion RMSE, fitted model&0.05385\\
+Mean purchase-proportion RMSE, true probabilities&0.05384\\
+Mean signed revenue prediction error&\(-0.0185\)\\
+Mean absolute revenue prediction error&0.1853\\
+Maximum absolute revenue prediction error&0.3973\\
+Replications selecting \(HL\)&20 of 20\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A separate implementation reconstructs histories by cumulative sums and fits the regressions using closed-form coefficients, reproducing the holdout metrics within \(10^{-10}\). For each fitted model and the true model, exact rational node potentials on the graph of 16 past-price states bound every policy's revenue by that of \(HL\). The fitted coefficients are treated as their represented binary rational values, with prices \(599/100\) and \(999/100\). Thus global optimality does not rely on restricting the search to short cycles.
+
+\textcolor{black}{For caps of at most \(m\in\{1,2,3,5\}\) promotions in ten periods,} exact rational enumeration evaluates all 1,024 arrangements. At every reported cap, the best arrangement uses the full allowance and matches the balanced policy's revenue. Period demand profiles independently reproduce the peak-to-average ratios and coefficients of variation. These checks concern the specified synthetic model.
+\begin{table}[ht]
+\centering\small\color{black}
+\setlength{\tabcolsep}{3pt}
+\caption{Promotion budgets in the access-service example, with \(\mathcal T=10\). Revenue is average monthly revenue; Gain is relative to constant regular pricing. Peak/avg and CV describe monthly demand, with CV using the population standard deviation. Premium is the revenue gain of balanced over single block at the same count.}
+\label{tab:promotion-budget-performance}
+\input{tables/promotion-budget.tex}
+\end{table}
+\par\endgroup
+
 \subsection{Reference price robustness}
 \label{app:numerical-reference}
+
+\begingroup\color{black}
+Retain the baseline prices, ages, and coefficients from Section~\ref{app:subscription-validation}, and let \(e\in\{0,1\}\) indicate historical engagement. Define
+\[
+ q_{a,t}^{e}=\alpha_a+\beta_a(d_t+e y_{a,t}),\qquad
+ r_{a,t}(\lambda)=\frac{\sum_{j=1}^a\lambda^{j-1}p_{t-j}}{\sum_{j=1}^a\lambda^{j-1}},
+ \qquad z_{a,t}=\frac{r_{a,t}(\lambda)-p_t}{p^H-p^L}.
+\]
+Following the gain and loss mechanisms of \citet{kopalle1996reference} and \citet{popescu2007}, set
+\begin{equation}\label{eq:reference-robustness-dgp}
+ M^{\mathrm{true}}_{a,t}
+ =\sigma\!\left(\operatorname{logit}(q_{a,t}^{e})
+       +\gamma\{(z_{a,t})_+-\ell(-z_{a,t})_+\}\right),
+ \qquad \sigma(v)=\frac1{1+\exp(-v)},
+\end{equation}
+with no reference term at age zero. For each \(e\), use one \(\gamma=0\) control and all combinations of \(\lambda\in\{0.2,0.6,1\}\), \(\gamma\in\{0.5,1.5\}\), and \(\ell\in\{0.5,2\}\). These 26 cases comprise ten count-based controls and 16 order-dependent cases. Smaller \(\lambda\) gives greater weight to recent prices.
+
+The population count model averages true probabilities within each age, current-price, and past-count cell under the baseline randomized histories. For each case, we also generate 100 data sets using the baseline sampling design and estimate the 30 cells from 300 groups by \(\widehat M_a(p,y)=(Y_{a,p,y}+1/2)/(N_{a,p,y}+1)\), where \(Y\) and \(N\) are purchases and trials. No shape restriction is imposed. We optimize each count model and evaluate its policy under true demand, reporting
+\[
+ \operatorname{Regret}(\widehat C)
+ =100\frac{\bar R_{\mathrm{true}}^*-
+               \bar R_{\mathrm{true}}(\widehat C)}{\bar R_{\mathrm{true}}^*}.
+\]
+Independent calculations on the equivalent graph with 16 past-price states and edge revenues verify all optima within \(10^{-10}\) revenue units.
+
+The exceptional population-count case has \(e=0\), \(\lambda=0.2\), \(\gamma=1.5\), and \(\ell=0.5\). Its estimated-policy mean regret is \(\RefWorstMean\%\), with Monte Carlo standard error \(\RefWorstMCSE\) percentage points and P95 \(\RefWorstTail\%\).
+\par\endgroup
 Table~\ref{tab:reference-robustness} supplements Section~\ref{sec:reference-robustness}. Each positive-\(\gamma\) row pools three reference smoothing parameters and two loss-to-gain ratios, with 100 replications per case. Population and Constant average case-level regrets. The fitted-policy mean, P95, and maximum use the pooled replications. Population excludes estimation noise. The low average losses coexist with the failure case discussed in the main text, so this experiment does not establish robustness beyond the specified demand grid.
 
 \begin{table}[H]
@@ -15,6 +94,40 @@ Table~\ref{tab:reference-robustness} supplements Section~\ref{sec:reference-robu
 \setlength{\tabcolsep}{4pt}
 \input{tables/reference-robustness.tex}
 \end{table}
+
+\begingroup\color{black}
+\subsection{Computational experiment design}
+\label{app:approximation-design}
+We use \(\mathcal A\in\{4,6,8\}\), with revenues and bounds scaled by \(1/(\mathcal A+1)\), and no estimation noise.
+
+For general demand, take \(p^L=1\), \(p^H=2\), and
+\[
+ M_a^d(y)=q^a\{\alpha+\eta d+f_a^d(y)\},\qquad
+ \eta=\alpha-\frac{\sum_{a=0}^{\mathcal A}q^af_a^1(a)}
+                         {\sum_{a=0}^{\mathcal A}q^a}+u,
+ \qquad d\in\{0,1\}.
+\]
+The constant prices tie at \(u=0\). Cross \(q\in\{0.4,0.7,0.95,1\}\), controlling fading with age, and \(u\in\{-0.04,0,0.04\}\), changing constant-price profitability, with two response grids. The first uses \(\alpha=0.30\) and
+\[
+ f_a^0(y)=f_a^1(y)=\beta y+\epsilon\binom y2,\qquad
+ \beta=\frac{\pm0.08}{\mathcal A},\quad
+ \epsilon=\frac{\pm v}{\binom{\mathcal A}{2}},\quad
+ v\in\{0.002,0.02,0.10,0.18\},
+\]
+with independent signs, giving 576 cases with varying response and curvature. The second uses \(\alpha=0.25\), \(f_a^0=0\), and
+\[
+ f_a^1(y)=\frac{v}{\mathcal A}
+       \cos\!\left(\frac{2\pi(a+\phi)}{P}\right)y,
+ \qquad v\in\{0.04,0.12,0.30\},\quad
+ P\in\{2,3,4\},\quad \phi\in\{0,1\},
+\]
+giving 648 cases with effects changing sign across ages. Both general grids have shares in \([0,0.824]\). The remaining 72 cases use multiplicative demand with \(s_1\in\{0.4,0.7,0.9,0.98\}\), \(s_2/s_1\in\{0.5,0.8\}\), \(p^L=1\), and \(\kappa=\theta+t(\tau^{\mathrm{mul}}-\theta)\), \(t\in\{0.25,0.5,0.75\}\). These lie in the mixed regime, with price ratios from approximately \(1.292\) to \(38.75\), including stress cases with large price gaps.
+
+
+General-demand truncation uses the compatible-range midpoint and bound \(2\varepsilon_J^{\mathrm{agg}}\); multiplicative demand uses factor omission and the one-sided bound in \eqref{eq:multiplicative-truncation}. \textcolor{blue}{Optimizing every \(J=0,\ldots,\mathcal A-1\) across the 1,296 demand functions gives 7,776 truncated problems.} All 9,072 full and truncated optima have cycle and potential certificates within \(10^{-9}\), with independent linear-programming checks of the full-model values.
+
+At \(J=3\), the general-demand bound is below \(0.702\%\) in every \(q=0.4\) case. At \(J=2\), no multiplicative bound is below \(1\%\), although every \(s_1=0.4\) case has zero loss to numerical precision. Factor omission inflates older-cohort demand, making the uniform bound conservative.
+\par\endgroup
 
 \subsection{Memory truncation at a common cutoff}
 \label{app:numerical-truncation}

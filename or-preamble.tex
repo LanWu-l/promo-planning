@@ -1,0 +1,67 @@
+% Adapted from supporting/legacy-project/Paper_v5.tex for the opre class option.
+% The INFORMS class supplies its own fonts, margins, and theorem machinery.
+\usepackage{mathtools}
+\usepackage{xcolor}
+\graphicspath{{figures/}}
+\usepackage{tabularx,booktabs}
+\usepackage[inline,shortlabels]{enumitem}
+\usepackage[authoryear,round]{natbib}
+\bibpunct[, ]{(}{)}{,}{a}{}{,}
+% Existing bare citations are parenthetical; textual citations use \citet.
+\let\cite\citep
+\def\bibfont{\small}
+\def\bibhang{24pt}
+\def\BIBand{and}
+\usepackage{aliascnt}
+\usepackage{algorithm,algorithmic}
+\usepackage{float,placeins}
+% OR submission tables follow the reference list; figures stay in the text.
+\usepackage[tablesonly,notablist,nomarkers]{endfloat}
+% Group tables naturally instead of forcing one largely empty page per table.
+\renewcommand{\efloatseparator}{\par\medskip}
+\usepackage[pdfencoding=auto,hypertexnames=false]{hyperref}
+\hypersetup{hidelinks}
+% Revised passages are marked explicitly in blue; existing text stays black.
+\providecommand{\newblock}{ }
+\providecommand{\algorithmautorefname}{Algorithm}
+\providecommand{\theoremautorefname}{Theorem}
+\providecommand{\lemmaautorefname}{Lemma}
+\providecommand{\propositionautorefname}{Proposition}
+\providecommand{\corollaryautorefname}{Corollary}
+\providecommand{\assumptionautorefname}{Assumption}
+
+\theoremstyle{TH}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{EX}
+\newtheorem{assumption}{Assumption}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\renewenvironment{proof}[1][Proof]
+ {\par\addvspace{6pt}\noindent\textit{#1.}\enspace\ignorespaces}
+ {\hfill\(\blacksquare\)\par\addvspace{6pt}}
+\EquationsNumberedThrough
+\def\ECHowTheorems{%
+ \setcounter{theorem}{0}%
+ \setcounter{assumption}{0}%
+ \setcounter{definition}{0}%
+ \setcounter{example}{0}%
+ \renewcommand{\thetheorem}{EC.\arabic{theorem}}%
+}
+\providecommand{\1}{\mathbf{1}}
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\Z}{\mathbb{Z}}
+\providecommand{\N}{\mathbb{N}}
+\providecommand{\argmax}{\mathop{\mathrm{argmax}}}
+\providecommand{\argmin}{\mathop{\mathrm{argmin}}}
+\setlength{\emergencystretch}{1em}
+\frenchspacing
+\raggedbottom
